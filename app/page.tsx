@@ -12,6 +12,7 @@ import { ContactSection } from "@/components/contact-section"
 import { ProductView } from "@/components/product-view"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { Footer } from "@/components/footer"
+import CustomerForm from "@/components/customer-form"
 
 // Cambiar la función formatPrice para usar coma como separador de miles
 const formatPrice = (price: number): string => {
@@ -177,6 +178,9 @@ export default function LaParritecaStore() {
       mql.removeEventListener("change", handleResize)
     }
   }, [])
+  const handleCloseCustomerForm = () => {
+    setShowCustomerForm(false)
+  }
 
   // Limpiar estados cuando cambia entre móvil y desktop
   useEffect(() => {
@@ -313,6 +317,7 @@ export default function LaParritecaStore() {
       setShowCustomerForm(true)
     }, 100)
   }
+
 
   // Función para ir a producto desde búsqueda
   const goToProduct = (product: (typeof products)[0]) => {
@@ -630,6 +635,17 @@ export default function LaParritecaStore() {
 
         {/* Overlay para cerrar resultados de búsqueda */}
         {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
+
+        {/* Formulario de datos del cliente */}
+        {(showCustomerForm) && (
+          <CustomerForm
+            cart={cart}
+            cartTotal={cartTotal}
+            onClose={handleCloseCustomerForm}
+            onSubmit={sendWhatsAppOrder}
+            formatPrice={formatPrice}
+          />
+        )}
       </div>
     )
   }
@@ -907,6 +923,16 @@ export default function LaParritecaStore() {
         {/* Overlay para cerrar resultados de búsqueda */}
         {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
       </div>
+      {/* Formulario de datos del cliente */}
+      {(showCustomerForm) && (
+        <CustomerForm
+          cart={cart}
+          cartTotal={cartTotal}
+          onClose={handleCloseCustomerForm}
+          onSubmit={sendWhatsAppOrder}
+          formatPrice={formatPrice}
+        />
+      )}
     </div>
   )
 }
