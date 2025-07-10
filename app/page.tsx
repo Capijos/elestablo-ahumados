@@ -38,7 +38,8 @@ const products = [
     tags: ["Chuleta", "Ahumada", "Cerdo", "Premium"],
     rating: 5,
     description:
-      "Chuleta de cerdo ahumada de primera calidad, perfecta para parrilla. Proceso de ahumado tradicional que le da un sabor único e irresistible.",
+      "Nuestra chuleta de cerdo ahumada por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de chuleta proviene de la costilla del cerdo y, tras el ahumado, adquiere un color rosado característico y un sabor ahumado unico con nuestra salmuera.",
+
   },
   {
     id: 2,
@@ -56,7 +57,7 @@ const products = [
     tags: ["Lomo", "Cerdo", "Ahumado", "Importado"],
     rating: 5,
     description:
-      "Lomo de cerdo ahumado importado, corte premium con sabor excepcional. Ideal para ocasiones especiales y parrilladas gourmet.",
+      "Nuestra lomo de cerdo ahumado por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de carne proviene  de la parte superior de la espalda justo debajo de las costillas, tras el ahumado, adquiere un color rosado característico y un sabor ahumado único con nuestra salmuera.",
   },
   {
     id: 3,
@@ -74,7 +75,8 @@ const products = [
     tags: ["Chorizo", "Cerdo", "Ahumado", "Artesanal"],
     rating: 4,
     description:
-      "Chorizo de cerdo ahumado artesanal, elaborado con especias selectas. Perfecto para acompañar cualquier parrillada con su sabor intenso.",
+      "Nuestro chorizo cerdo ahumado por 72 horas es un producto que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, que le da este color y sabor único.",
+
   },
   {
     id: 4,
@@ -92,7 +94,8 @@ const products = [
     tags: ["Chorizo", "Pollo", "Ahumado", "Saludable"],
     rating: 5,
     description:
-      "Chorizo de pollo ahumado, opción más saludable sin sacrificar sabor. Elaborado con pollo de primera calidad y proceso de ahumado tradicional.",
+      "Nuestro chorizo de pollo ahumado por 72 horas, es un producto único en colombia atrevete a probarlo lo mejor de lo mejor parce.",
+
   },
   {
     id: 5,
@@ -110,7 +113,8 @@ const products = [
     tags: ["Costillas", "Cerdo", "Ahumadas", "BBQ"],
     rating: 4,
     description:
-      "Costillas de cerdo ahumadas, perfectas para BBQ. Carne tierna que se desprende del hueso, con sabor ahumado intenso y delicioso.",
+      "Nuestra costillas de cerdo ahumada por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de carne proviene de la costilla del cerdo y, tras el ahumado, adquiere un color rosado característico y un sabor ahumado unico con nuestra salmuera.",
+
   },
 
 ]
@@ -627,10 +631,17 @@ export default function LaParritecaStore() {
         <div className="fixed bottom-6 right-6 z-50">
           <Button
             onClick={() => window.open("https://wa.me/573224080321", "_blank")}
-            className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg"
+            className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg flex items-center justify-center"
           >
-            <MessageCircle className="w-6 h-6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              className="w-8 h-8 fill-white"
+            >
+              <path d="M16 2.933C8.82 2.933 2.933 8.82 2.933 16c0 2.767.738 5.428 2.137 7.778L2 30l6.423-2.016A13.007 13.007 0 0016 29.067C23.18 29.067 29.067 23.18 29.067 16S23.18 2.933 16 2.933zm0 23.467c-2.233 0-4.418-.638-6.302-1.85l-.45-.284-3.812 1.196 1.21-3.71-.294-.475C5.467 19.013 4.933 17.532 4.933 16c0-6.106 4.96-11.067 11.067-11.067S27.067 9.894 27.067 16 22.106 26.4 16 26.4zm6.098-8.19c-.33-.165-1.95-.96-2.254-1.07-.303-.11-.524-.165-.744.165s-.855 1.07-1.05 1.29-.39.248-.72.082c-.33-.165-1.398-.513-2.664-1.635-1-0.89-1.675-1.99-1.87-2.32s-.02-.495.146-.66c.15-.15.33-.39.495-.585.165-.198.22-.33.33-.55.11-.22.055-.413-.028-.578-.082-.165-.744-1.797-1.02-2.465-.27-.646-.544-.558-.744-.568l-.63-.012c-.22 0-.578.082-.88.385-.3.303-1.154 1.125-1.154 2.745s1.18 3.18 1.345 3.402c.165.22 2.32 3.542 5.63 4.964.788.34 1.403.544 1.882.696.79.252 1.51.217 2.077.132.633-.094 1.95-.795 2.227-1.563.275-.77.275-1.43.192-1.562-.082-.135-.3-.22-.63-.385z" />
+            </svg>
           </Button>
+
         </div>
 
         {/* Overlay para cerrar resultados de búsqueda */}
@@ -914,10 +925,17 @@ export default function LaParritecaStore() {
         <div className="fixed bottom-6 right-6 z-50">
           <Button
             onClick={() => window.open("https://wa.me/573224080321", "_blank")}
-            className="bg-green-600 hover:bg-green-700 rounded-full w-14 h-14 shadow-lg"
+            className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg flex items-center justify-center"
           >
-            <MessageCircle className="w-6 h-6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              className="w-8 h-8 fill-white"
+            >
+              <path d="M16 2.933C8.82 2.933 2.933 8.82 2.933 16c0 2.767.738 5.428 2.137 7.778L2 30l6.423-2.016A13.007 13.007 0 0016 29.067C23.18 29.067 29.067 23.18 29.067 16S23.18 2.933 16 2.933zm0 23.467c-2.233 0-4.418-.638-6.302-1.85l-.45-.284-3.812 1.196 1.21-3.71-.294-.475C5.467 19.013 4.933 17.532 4.933 16c0-6.106 4.96-11.067 11.067-11.067S27.067 9.894 27.067 16 22.106 26.4 16 26.4zm6.098-8.19c-.33-.165-1.95-.96-2.254-1.07-.303-.11-.524-.165-.744.165s-.855 1.07-1.05 1.29-.39.248-.72.082c-.33-.165-1.398-.513-2.664-1.635-1-0.89-1.675-1.99-1.87-2.32s-.02-.495.146-.66c.15-.15.33-.39.495-.585.165-.198.22-.33.33-.55.11-.22.055-.413-.028-.578-.082-.165-.744-1.797-1.02-2.465-.27-.646-.544-.558-.744-.568l-.63-.012c-.22 0-.578.082-.88.385-.3.303-1.154 1.125-1.154 2.745s1.18 3.18 1.345 3.402c.165.22 2.32 3.542 5.63 4.964.788.34 1.403.544 1.882.696.79.252 1.51.217 2.077.132.633-.094 1.95-.795 2.227-1.563.275-.77.275-1.43.192-1.562-.082-.135-.3-.22-.63-.385z" />
+            </svg>
           </Button>
+
         </div>
 
         {/* Overlay para cerrar resultados de búsqueda */}

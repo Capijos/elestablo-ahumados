@@ -287,10 +287,10 @@ export function ProductView({
 
           <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30 space-y-4">
             {/* Cabecera */}
-            <div className="text-center space-y-3">
+            <div className="text-left space-y-3">
               <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">{product.category}</Badge>
               <h2 className="text-lg font-bold text-white leading-tight">{product.name}</h2>
-              <div className="flex items-center justify-center space-x-3">
+              <div className="flex items-center space-x-3">
                 <span className="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-300 bg-clip-text text-transparent">
                   ${formatPrice(product.price)}
                 </span>
@@ -299,6 +299,7 @@ export function ProductView({
                 )}
               </div>
             </div>
+
 
             {/* Detalles */}
             <div className="grid grid-cols-2 gap-4 text-sm">
@@ -341,7 +342,7 @@ export function ProductView({
         {/* Overlay fijo en la parte inferior para agregar al carrito */}
         {product.inStock && (
           <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-sm border-t border-gray-700 p-4 z-50">
-            <div className="flex items-center justify-between space-x-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
               {/* Selector de cantidad */}
               <div className="flex items-center space-x-3">
                 <Button
@@ -369,7 +370,7 @@ export function ProductView({
               {/* Botón agregar al carrito */}
               <Button
                 onClick={handleAddToCart}
-                className="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-12 text-base font-bold rounded-xl shadow-lg transition-all duration-300"
+                className="flex-1 min-w-[150px] bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-12 text-base font-bold rounded-xl shadow-lg transition-all duration-300"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 AÑADIR AL CARRITO
@@ -383,6 +384,7 @@ export function ProductView({
               </span>
             </div>
           </div>
+
         )}
 
         {/* Mensaje cuando no hay stock */}
@@ -395,13 +397,21 @@ export function ProductView({
         )}
 
         {/* Botón flotante de WhatsApp - siempre visible */}
-        <div className="fixed bottom-[8rem] right-4 z-50">
+        <div className="fixed bottom-[7.2rem] right-4 z-50">
           <Button
             onClick={() => window.open("https://wa.me/573224080321", "_blank")}
-            className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg"
+            className="bg-green-500 hover:bg-green-600 rounded-full w-16 h-16 shadow-lg flex items-center justify-center"
           >
-            <MessageCircle className="w-6 h-6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              className="w-10 h-10 fill-white"
+            >
+              <path d="M16 2.933C8.82 2.933 2.933 8.82 2.933 16c0 2.767.738 5.428 2.137 7.778L2 30l6.423-2.016A13.007 13.007 0 0016 29.067C23.18 29.067 29.067 23.18 29.067 16S23.18 2.933 16 2.933zm0 23.467c-2.233 0-4.418-.638-6.302-1.85l-.45-.284-3.812 1.196 1.21-3.71-.294-.475C5.467 19.013 4.933 17.532 4.933 16c0-6.106 4.96-11.067 11.067-11.067S27.067 9.894 27.067 16 22.106 26.4 16 26.4zm6.098-8.19c-.33-.165-1.95-.96-2.254-1.07-.303-.11-.524-.165-.744.165s-.855 1.07-1.05 1.29-.39.248-.72.082c-.33-.165-1.398-.513-2.664-1.635-1-0.89-1.675-1.99-1.87-2.32s-.02-.495.146-.66c.15-.15.33-.39.495-.585.165-.198.22-.33.33-.55.11-.22.055-.413-.028-.578-.082-.165-.744-1.797-1.02-2.465-.27-.646-.544-.558-.744-.568l-.63-.012c-.22 0-.578.082-.88.385-.3.303-1.154 1.125-1.154 2.745s1.18 3.18 1.345 3.402c.165.22 2.32 3.542 5.63 4.964.788.34 1.403.544 1.882.696.79.252 1.51.217 2.077.132.633-.094 1.95-.795 2.227-1.563.275-.77.275-1.43.192-1.562-.082-.135-.3-.22-.63-.385z" />
+            </svg>
           </Button>
+
+
         </div>
 
         {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
