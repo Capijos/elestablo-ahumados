@@ -407,10 +407,10 @@ export default function LaParritecaStore() {
               {/* Logo centrado */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-3">
                 <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">LP</span>
+                  <span className="text-white font-bold text-lg">EA</span>
                 </div>
                 <div className="text-center">
-                  <div className="text-xl font-bold text-white">LA PARRITECA</div>
+                  <div className="text-xl font-bold text-white">EL ESTABLO AHUMADOS</div>
                   <div className="text-red-500 text-sm">Tienda</div>
                 </div>
               </div>
@@ -660,9 +660,9 @@ export default function LaParritecaStore() {
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">LP</span>
+                    <span className="text-white font-bold text-lg">EA</span>
                   </div>
-                  <span className="text-2xl font-bold">LA PARRITECA</span>
+                  <span className="text-2xl font-bold">EL ESTABLO AHUMADOS</span>
                 </div>
 
                 <nav className="flex space-x-8">

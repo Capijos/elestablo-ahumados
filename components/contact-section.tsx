@@ -68,7 +68,7 @@ export function ContactSection({ onClose }: ContactSectionProps) {
 
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-semibold mb-2">Sobre La Parriteca</h3>
+                <h3 className="font-semibold mb-2">Sobre EL ESTABLO AHUMADOS</h3>
                 <p className="text-gray-600 text-sm">
                   Somos una carnicería especializada en carnes premium para parrilla. Ofrecemos los mejores cortes,
                   embutidos artesanales y todo lo necesario para que tu asado sea perfecto.

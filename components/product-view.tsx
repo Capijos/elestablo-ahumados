@@ -123,7 +123,7 @@ export function ProductView({
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-lg">LP</span>
+            <span className="text-white font-bold text-lg">EA</span>
           </div>
           <p className="text-gray-400">Cargando...</p>
         </div>
@@ -143,10 +143,10 @@ export function ProductView({
 
               <div className="flex items-center space-x-2">
                 <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">LP</span>
+                  <span className="text-white font-bold">EA</span>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-bold text-white">LA PARRITECA</div>
+                  <div className="text-lg font-bold text-white">EL ESTABLO AHUMADOS</div>
                 </div>
               </div>
 
@@ -415,9 +415,9 @@ export function ProductView({
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">LP</span>
+                    <span className="text-white font-bold text-lg">EA</span>
                   </div>
-                  <span className="text-2xl font-bold">LA PARRITECA</span>
+                  <span className="text-2xl font-bold">EL ESTABLO AHUMADOS</span>
                 </div>
 
                 <nav className="flex space-x-8">

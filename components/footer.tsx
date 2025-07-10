@@ -11,10 +11,10 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">LP</span>
+                <span className="text-white font-bold text-lg">EA</span>
               </div>
               <div>
-                <h3 className="text-xl font-bold">LA PARRITECA</h3>
+                <h3 className="text-xl font-bold">EL ESTABLO AHUMADOS</h3>
                 <p className="text-red-500 text-sm">Tu carnicería de confianza</p>
               </div>
             </div>
@@ -105,7 +105,7 @@ export function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              <p>&copy; 2024 La Parriteca. Todos los derechos reservados.</p>
+              <p>&copy; 2024 EL ESTABLO AHUMADOS. Todos los derechos reservados.</p>
             </div>
             <div className="flex space-x-6 text-sm text-gray-400">
               <button className="hover:text-white transition-colors">Términos y Condiciones</button>
