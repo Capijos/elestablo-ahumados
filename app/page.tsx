@@ -53,7 +53,7 @@ const products = [
     category: "EMBUTIDOS Y FIAMBRES",
     images: [
       "https://chistorradenavarra.com/wp-content/uploads/%C2%BFQue%CC%81-es-un-chorizo-criollo.jpg",
-     
+
     ],
     inStock: true,
     sku: "CAR003",
@@ -91,7 +91,7 @@ const products = [
     description:
       "Clásico asado de tira, corte tradicional argentino perfecto para compartir en familia. Con el equilibrio perfecto entre carne y grasa, garantiza una cocción uniforme y un sabor inigualable.",
   },
- 
+
 ]
 
 const categories = [
@@ -548,7 +548,7 @@ export default function LaParritecaStore() {
           </section>
         )}
 
-        {/* Productos más buscados - Solo mostrar si no hay filtros activos */}
+        {/* Productos más buscados - Solo mostrar si no hay filtros activos 
         {!selectedCategory && !showAllSearchResults && (
           <section className="py-12">
             <div className="container mx-auto px-4">
@@ -596,7 +596,7 @@ export default function LaParritecaStore() {
             </div>
           </section>
         )}
-
+        */}
         {/* Todos los productos disponibles */}
         {!selectedCategory && !showAllSearchResults && (
           <section className="py-12">
@@ -645,7 +645,7 @@ export default function LaParritecaStore() {
             </div>
           </section>
         )}
-        {/* Categorías de productos - Solo mostrar si no hay filtros activos */}
+        {/* Categorías de productos - Solo mostrar si no hay filtros activos 
         {!selectedCategory && !showAllSearchResults && (
           <section className="py-12">
             <div className="container mx-auto px-4">
@@ -676,6 +676,7 @@ export default function LaParritecaStore() {
             </div>
           </section>
         )}
+        */}
 
 
 
