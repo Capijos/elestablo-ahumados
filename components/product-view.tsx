@@ -2,9 +2,13 @@
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, ShoppingCart, Check } from "lucide-react"
+import { ArrowLeft, ShoppingCart, Check, Search, MessageCircle } from "lucide-react"
 import { useState, useEffect } from "react"
 import { ProductImageCarousel } from "@/components/product-image-carousel"
+import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import Image from "next/image"
+import CustomerForm from "@/components/customer-form"
 
 interface Product {
   id: number
@@ -20,29 +24,87 @@ interface Product {
   description: string
 }
 
+interface CartItem {
+  id: number
+  name: string
+  price: number
+  quantity: number
+  image: string
+}
+
 interface ProductViewProps {
   product: Product
   onBack: () => void
   onAddToCart: (product: Product, quantity: number) => void
+  cart?: CartItem[]
+  cartTotal?: number
+  cartItemsCount?: number
+  onUpdateCartQuantity?: (id: number, newQuantity: number) => void
+  onContinueOrder?: () => void
+  onGoToProduct?: (product: Product) => void
+  products?: Product[]
+  formatPrice?: (price: number) => string
+  showCustomerForm?: boolean
+  onCloseCustomerForm?: () => void
+  onSubmitOrder?: (customerData: any) => void
 }
 
-export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) {
+export function ProductView({
+  product,
+  onBack,
+  onAddToCart,
+  cart = [],
+  cartTotal = 0,
+  cartItemsCount = 0,
+  onUpdateCartQuantity = () => {},
+  onContinueOrder = () => {},
+  onGoToProduct = () => {},
+  products = [],
+  formatPrice = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+  showCustomerForm = false,
+  onCloseCustomerForm = () => {},
+  onSubmitOrder = () => {},
+}: ProductViewProps) {
   const [quantity, setQuantity] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [cartOpen, setCartOpen] = useState(false)
+  const [showSearchResults, setShowSearchResults] = useState(false)
+  const [localShowCustomerForm, setLocalShowCustomerForm] = useState(false)
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
     }
+
     checkIsMobile()
     window.addEventListener("resize", checkIsMobile)
     return () => window.removeEventListener("resize", checkIsMobile)
   }, [])
 
+  // Sincronizar el estado del formulario
+  useEffect(() => {
+    setLocalShowCustomerForm(showCustomerForm)
+  }, [showCustomerForm])
+
   const handleAddToCart = () => {
     onAddToCart(product, quantity)
     setShowSuccess(true)
+  }
+
+  // Función local para manejar continuar pedido
+  const handleLocalContinueOrder = () => {
+    setCartOpen(false)
+    setLocalShowCustomerForm(true)
+    onContinueOrder() // También llamar la función del padre
+  }
+
+  // Función para cerrar el formulario
+  const handleCloseCustomerForm = () => {
+    setLocalShowCustomerForm(false)
+    onCloseCustomerForm()
   }
 
   useEffect(() => {
@@ -54,48 +116,180 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
     }
   }, [showSuccess])
 
-  // Vista móvil optimizada y compacta
+  const searchResults = products.filter((p) => p.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5)
+
+  if (isMobile === null) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-white font-bold text-lg">LP</span>
+          </div>
+          <p className="text-gray-400">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (isMobile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
-        {/* Header móvil compacto */}
-        <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-gray-800/50">
-          <div className="flex items-center justify-between px-4 py-3">
-            <Button onClick={onBack} variant="ghost" size="sm" className="p-2 hover:bg-gray-800/50">
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </Button>
-            <h1 className="text-sm font-semibold text-white text-center flex-1 mx-4 truncate">{product.name}</h1>
-            <div className="w-9"></div> {/* Spacer para centrar */}
+      <div className="min-h-screen bg-black text-white">
+        <header className="bg-black border-b border-gray-800 sticky top-0 z-40">
+          <div className="px-4 py-3">
+            <div className="flex items-center justify-between">
+              <Button onClick={onBack} variant="ghost" size="sm" className="p-2">
+                <ArrowLeft className="w-5 h-5 text-white" />
+              </Button>
+
+              <div className="flex items-center space-x-2">
+                <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold">LP</span>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-white">LA PARRITECA</div>
+                </div>
+              </div>
+
+              <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" className="relative p-2">
+                    <ShoppingCart className="w-5 h-5 text-white" />
+                    {cartItemsCount > 0 && (
+                      <Badge className="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 min-w-[1.25rem] h-5">
+                        {cartItemsCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-full bg-white text-black">
+                  <SheetHeader>
+                    <SheetTitle>Carrito de Compras</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    {cart.length === 0 ? (
+                      <p className="text-gray-500 text-center py-8">Tu carrito está vacío</p>
+                    ) : (
+                      <>
+                        {cart.map((item) => (
+                          <div key={item.id} className="flex items-center space-x-3 p-3 border rounded-lg">
+                            <Image
+                              src={item.image || "/placeholder.svg"}
+                              alt={item.name}
+                              width={50}
+                              height={50}
+                              className="rounded"
+                            />
+                            <div className="flex-1">
+                              <p className="font-medium text-sm">{item.name}</p>
+                              <p className="text-green-600 font-bold">${formatPrice(item.price)}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => onUpdateCartQuantity(item.id, item.quantity - 1)}
+                              >
+                                -
+                              </Button>
+                              <span className="w-8 text-center">{item.quantity}</span>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => onUpdateCartQuantity(item.id, item.quantity + 1)}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                        <div className="border-t pt-4">
+                          <div className="flex justify-between items-center mb-4">
+                            <span className="font-bold text-lg">Total: ${formatPrice(cartTotal)}</span>
+                          </div>
+                          <Button onClick={handleLocalContinueOrder} className="w-full bg-green-600 hover:bg-green-700">
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Continuar con pedido
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
         </header>
 
-        {/* Mensaje de éxito compacto */}
+        <div className="bg-gray-100 px-4 py-2 relative">
+          <div className="flex items-center space-x-2">
+            <Input
+              type="text"
+              placeholder="Buscar otros productos..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                setShowSearchResults(e.target.value.length > 0)
+              }}
+              className="flex-1 bg-white text-black border-0 h-10"
+            />
+            <Button className="bg-red-600 hover:bg-red-700 px-3 py-2 h-10">
+              <Search className="w-4 h-4" />
+            </Button>
+          </div>
+
+          {showSearchResults && searchResults.length > 0 && (
+            <div className="absolute top-full left-4 right-4 bg-white text-black mt-1 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+              {searchResults.map((searchProduct) => (
+                <div
+                  key={searchProduct.id}
+                  className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 flex items-center space-x-3"
+                  onClick={() => {
+                    onGoToProduct(searchProduct)
+                    setShowSearchResults(false)
+                    setSearchTerm("")
+                  }}
+                >
+                  <Image
+                    src={searchProduct.images[0] || "/placeholder.svg"}
+                    alt={searchProduct.name}
+                    width={35}
+                    height={35}
+                    className="rounded"
+                  />
+                  <div className="flex-1">
+                    <p className="font-medium text-xs">{searchProduct.name}</p>
+                    <p className="text-green-600 font-bold text-sm">${formatPrice(searchProduct.price)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {showSuccess && (
-          <div className="fixed top-16 left-4 right-4 bg-gradient-to-r from-green-600 to-green-500 text-white px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center space-x-2">
+          <div className="fixed top-32 left-4 right-4 bg-gradient-to-r from-green-600 to-green-500 text-white px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center space-x-2">
             <Check className="w-4 h-4" />
             <span className="text-sm font-medium">¡Agregado al carrito!</span>
           </div>
         )}
 
         <div className="p-4 space-y-4">
-          {/* Carrusel de imágenes compacto */}
-          <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl p-3 backdrop-blur-sm">
+          <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl p-3 backdrop-blur-sm border border-gray-700/30">
             <ProductImageCarousel
               images={product.images}
               productName={product.name}
               inStock={product.inStock}
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full"
             />
           </div>
 
-          {/* Información principal compacta */}
           <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30">
             <div className="text-center space-y-3">
               <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">{product.category}</Badge>
               <h2 className="text-lg font-bold text-white leading-tight">{product.name}</h2>
               <div className="flex items-center justify-center space-x-3">
                 <span className="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-300 bg-clip-text text-transparent">
-                  $ {product.price.toFixed(2)}
+                  ${formatPrice(product.price)}
                 </span>
                 {product.inStock && (
                   <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">En Stock</Badge>
@@ -104,9 +298,7 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
             </div>
           </div>
 
-          {/* Información detallada en una sola card */}
           <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30 space-y-4">
-            {/* SKU y disponibilidad */}
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="text-gray-400 block">SKU</span>
@@ -120,9 +312,8 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
               </div>
             </div>
 
-            {/* Características */}
             <div>
-              <span className="text-gray-400 text-sm block mb-2">Características</span>
+              <span className="text-gray-400 block mb-2">Características</span>
               <div className="flex flex-wrap gap-1">
                 {product.tags.map((tag, index) => (
                   <span
@@ -135,14 +326,12 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
               </div>
             </div>
 
-            {/* Descripción */}
             <div>
-              <span className="text-gray-400 text-sm block mb-2">Descripción</span>
+              <span className="text-gray-400 block mb-2">Descripción</span>
               <p className="text-white text-sm leading-relaxed">{product.description}</p>
             </div>
           </div>
 
-          {/* Selector de cantidad y botón - compacto */}
           {product.inStock && (
             <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30 space-y-4">
               <div className="flex items-center justify-center space-x-4">
@@ -173,10 +362,10 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
 
               <Button
                 onClick={handleAddToCart}
-                className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-12 font-bold rounded-xl shadow-lg transition-all duration-300"
+                className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-12 text-lg font-bold rounded-xl shadow-lg transition-all duration-300"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
-                Agregar $ {(product.price * quantity).toFixed(2)}
+                Agregar ${formatPrice(product.price * quantity)}
               </Button>
             </div>
           )}
@@ -189,11 +378,24 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
             </div>
           )}
         </div>
+
+        {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
+
+        {/* Formulario de datos del cliente */}
+        {(showCustomerForm || localShowCustomerForm) && (
+          <CustomerForm
+            cart={cart}
+            cartTotal={cartTotal}
+            onClose={handleCloseCustomerForm}
+            onSubmit={onSubmitOrder}
+            formatPrice={formatPrice}
+          />
+        )}
       </div>
     )
   }
 
-  // Vista desktop compacta
+  // Vista desktop
   return (
     <div className="min-h-screen text-white relative">
       <div
@@ -207,25 +409,160 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
       />
       <div className="absolute inset-0 bg-black bg-opacity-10 z-10" />
       <div className="relative z-20">
-        {/* Header desktop compacto */}
-        <header className="bg-black/95 backdrop-blur-md border-b border-gray-800/50 sticky top-0 z-50">
+        <header className="bg-black border-b border-gray-800">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
-              <Button
-                onClick={onBack}
-                variant="outline"
-                className="bg-transparent border-gray-600 hover:bg-gray-800/50"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Volver a la tienda
-              </Button>
-              <h1 className="text-lg font-semibold text-white">{product.name}</h1>
-              <div className="w-32"></div> {/* Spacer */}
+              <div className="flex items-center space-x-8">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">LP</span>
+                  </div>
+                  <span className="text-2xl font-bold">LA PARRITECA</span>
+                </div>
+
+                <nav className="flex space-x-8">
+                  <button onClick={onBack} className="hover:text-red-500 transition-colors text-lg">
+                    TIENDA
+                  </button>
+                  <button className="hover:text-red-500 transition-colors text-lg">CONTACTO</button>
+                </nav>
+              </div>
+
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <div className="flex items-center">
+                    <Input
+                      type="text"
+                      placeholder="Buscar productos..."
+                      value={searchTerm}
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value)
+                        setShowSearchResults(e.target.value.length > 0)
+                      }}
+                      onFocus={() => setShowSearchResults(searchTerm.length > 0)}
+                      className="w-64 bg-white text-black"
+                    />
+                    <Button size="sm" className="ml-2 bg-red-600 hover:bg-red-700">
+                      <Search className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {showSearchResults && searchResults.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 bg-white text-black mt-1 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+                      {searchResults.map((searchProduct) => (
+                        <div
+                          key={searchProduct.id}
+                          className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 flex items-center space-x-3"
+                          onClick={() => {
+                            onGoToProduct(searchProduct)
+                            setShowSearchResults(false)
+                            setSearchTerm("")
+                          }}
+                        >
+                          <Image
+                            src={searchProduct.images[0] || "/placeholder.svg"}
+                            alt={searchProduct.name}
+                            width={40}
+                            height={40}
+                            className="rounded"
+                          />
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">{searchProduct.name}</p>
+                            <p className="text-green-600 font-bold">${formatPrice(searchProduct.price)}</p>
+                          </div>
+                          {!searchProduct.inStock && (
+                            <Badge variant="destructive" className="text-xs">
+                              Sin stock
+                            </Badge>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="relative bg-transparent">
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      CARRITO / ${formatPrice(cartTotal)}
+                      {cartItemsCount > 0 && (
+                        <Badge className="absolute -top-2 -right-2 bg-red-600 text-xs px-1 min-w-[1.25rem] h-5">
+                          {cartItemsCount}
+                        </Badge>
+                      )}
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="w-96">
+                    <SheetHeader>
+                      <SheetTitle>Carrito de Compras</SheetTitle>
+                    </SheetHeader>
+                    <div className="mt-6 space-y-4">
+                      {cart.length === 0 ? (
+                        <p className="text-gray-500 text-center py-8">Tu carrito está vacío</p>
+                      ) : (
+                        <>
+                          {cart.map((item) => (
+                            <div key={item.id} className="flex items-center space-x-3 p-3 border rounded-lg">
+                              <Image
+                                src={item.image || "/placeholder.svg"}
+                                alt={item.name}
+                                width={50}
+                                height={50}
+                                className="rounded"
+                              />
+                              <div className="flex-1">
+                                <p className="font-medium text-sm">{item.name}</p>
+                                <p className="text-green-600 font-bold">${formatPrice(item.price)}</p>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => onUpdateCartQuantity(item.id, item.quantity - 1)}
+                                >
+                                  -
+                                </Button>
+                                <span className="w-8 text-center">{item.quantity}</span>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => onUpdateCartQuantity(item.id, item.quantity + 1)}
+                                >
+                                  +
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                          <div className="border-t pt-4">
+                            <div className="flex justify-between items-center mb-4">
+                              <span className="font-bold text-lg">Total: ${formatPrice(cartTotal)}</span>
+                            </div>
+                            <Button
+                              onClick={handleLocalContinueOrder}
+                              className="w-full bg-green-600 hover:bg-green-700"
+                            >
+                              <MessageCircle className="w-4 h-4 mr-2" />
+                              Continuar con pedido
+                            </Button>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
             </div>
           </div>
         </header>
 
-        {/* Mensaje de éxito desktop */}
+        <div className="container mx-auto px-4 py-4">
+          <Button onClick={onBack} variant="outline" className="bg-transparent border-gray-600 hover:bg-gray-800/50">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Volver a la tienda
+          </Button>
+        </div>
+
         {showSuccess && (
           <div className="fixed top-20 right-6 bg-gradient-to-r from-green-600 to-green-500 text-white px-6 py-3 rounded-xl shadow-2xl z-50 flex items-center space-x-2">
             <Check className="w-5 h-5" />
@@ -235,21 +572,18 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
 
         <div className="container mx-auto px-4 py-8">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Carrusel de imágenes desktop */}
             <div className="bg-gradient-to-br from-gray-900/40 to-black/40 rounded-2xl p-6 backdrop-blur-sm border border-gray-700/30">
               <ProductImageCarousel images={product.images} productName={product.name} inStock={product.inStock} />
             </div>
 
-            {/* Información del producto desktop */}
             <div className="space-y-6">
-              {/* Header del producto compacto */}
               <div className="bg-gradient-to-br from-gray-900/40 to-black/40 rounded-2xl p-6 backdrop-blur-sm border border-gray-700/30">
                 <div className="space-y-4">
                   <Badge className="bg-red-500/20 text-red-400 border-red-500/30">{product.category}</Badge>
                   <h2 className="text-3xl font-bold text-white leading-tight">{product.name}</h2>
                   <div className="flex items-center space-x-4">
                     <span className="text-4xl font-bold bg-gradient-to-r from-green-400 to-green-300 bg-clip-text text-transparent">
-                      $ {product.price.toFixed(2)}
+                      ${formatPrice(product.price)}
                     </span>
                     {product.inStock && (
                       <Badge className="bg-green-500/20 text-green-400 border-green-500/30">En Stock</Badge>
@@ -258,9 +592,7 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
                 </div>
               </div>
 
-              {/* Información detallada */}
               <div className="bg-gradient-to-br from-gray-900/40 to-black/40 rounded-2xl p-6 backdrop-blur-sm border border-gray-700/30 space-y-4">
-                {/* SKU y disponibilidad */}
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <span className="text-gray-400 block mb-1">SKU</span>
@@ -274,7 +606,6 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
                   </div>
                 </div>
 
-                {/* Características */}
                 <div>
                   <span className="text-gray-400 block mb-2">Características</span>
                   <div className="flex flex-wrap gap-2">
@@ -289,14 +620,12 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
                   </div>
                 </div>
 
-                {/* Descripción */}
                 <div>
                   <span className="text-gray-400 block mb-2">Descripción</span>
                   <p className="text-white leading-relaxed">{product.description}</p>
                 </div>
               </div>
 
-              {/* Selector de cantidad y botón desktop */}
               {product.inStock && (
                 <div className="bg-gradient-to-br from-gray-900/40 to-black/40 rounded-2xl p-6 backdrop-blur-sm border border-gray-700/30 space-y-6">
                   <div className="flex items-center space-x-6">
@@ -328,7 +657,7 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
                     className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-14 text-lg font-bold rounded-xl shadow-lg transition-all duration-300"
                   >
                     <ShoppingCart className="w-5 h-5 mr-3" />
-                    Agregar al carrito - $ {(product.price * quantity).toFixed(2)}
+                    Agregar al carrito - ${formatPrice(product.price * quantity)}
                   </Button>
                 </div>
               )}
@@ -343,7 +672,20 @@ export function ProductView({ product, onBack, onAddToCart }: ProductViewProps) 
             </div>
           </div>
         </div>
+
+        {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
       </div>
+
+      {/* Formulario de datos del cliente */}
+      {(showCustomerForm || localShowCustomerForm) && (
+        <CustomerForm
+          cart={cart}
+          cartTotal={cartTotal}
+          onClose={handleCloseCustomerForm}
+          onSubmit={onSubmitOrder}
+          formatPrice={formatPrice}
+        />
+      )}
     </div>
   )
 }

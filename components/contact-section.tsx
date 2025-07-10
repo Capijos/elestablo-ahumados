@@ -40,7 +40,7 @@ export function ContactSection({ onClose }: ContactSectionProps) {
                 <div>
                   <h3 className="font-semibold">Teléfonos</h3>
                   <p className="text-gray-600">
-                    WhatsApp: +57 300 123 4567
+                    WhatsApp: +57 322 408 0321
                     <br />
                     Fijo: (601) 234 5678
                   </p>
@@ -86,7 +86,7 @@ export function ContactSection({ onClose }: ContactSectionProps) {
               </div>
 
               <Button
-                onClick={() => window.open("https://wa.me/573001234567", "_blank")}
+                onClick={() => window.open("https://wa.me/573224080321", "_blank")}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />

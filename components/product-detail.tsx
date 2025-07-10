@@ -12,10 +12,12 @@ interface Product {
   name: string
   price: number
   category: string
+  subcategory: string
   images: string[]
   inStock: boolean
   sku: string
   tags: string[]
+  rating: number
   description: string
 }
 
@@ -49,7 +51,7 @@ export function ProductDetail({ product, onClose, onAddToCart }: ProductDetailPr
               images={product.images}
               productName={product.name}
               inStock={product.inStock}
-              className="w-full"
+              className="w-full h-full"
             />
 
             {/* Información del producto */}

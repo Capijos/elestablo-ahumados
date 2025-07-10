@@ -8,11 +8,15 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { CustomerForm } from "@/components/customer-form"
 import { ContactSection } from "@/components/contact-section"
 import { ProductView } from "@/components/product-view"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { Footer } from "@/components/footer"
+
+// Cambiar la función formatPrice para usar coma como separador de miles
+const formatPrice = (price: number): string => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
 
 // Datos de productos
 const products = [
@@ -33,8 +37,7 @@ const products = [
     tags: ["Chuleta", "Ahumada", "Cerdo", "Premium"],
     rating: 5,
     description:
-      "Nuestra chuleta de cerdo ahumada por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de chuleta proviene de la costilla del cerdo y, tras el ahumado, adquiere un color rosado característico y un sabor ahumado unico con nuestra salmuera.",
-
+      "Chuleta de cerdo ahumada de primera calidad, perfecta para parrilla. Proceso de ahumado tradicional que le da un sabor único e irresistible.",
   },
   {
     id: 2,
@@ -50,9 +53,9 @@ const products = [
     inStock: true,
     sku: "CAR003",
     tags: ["Lomo", "Cerdo", "Ahumado", "Importado"],
-    rating: 3,
+    rating: 5,
     description:
-      "Nuestra lomo de cerdo ahumado por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de carne proviene  de la parte superior de la espalda justo debajo de las costillas, tras el ahumado, adquiere un color rosado característico y un sabor ahumado único con nuestra salmuera.",
+      "Lomo de cerdo ahumado importado, corte premium con sabor excepcional. Ideal para ocasiones especiales y parrilladas gourmet.",
   },
   {
     id: 3,
@@ -70,8 +73,7 @@ const products = [
     tags: ["Chorizo", "Cerdo", "Ahumado", "Artesanal"],
     rating: 4,
     description:
-      "Nuestro chorizo cerdo ahumado por 72 horas es un producto que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, que le da este color y sabor único.",
-
+      "Chorizo de cerdo ahumado artesanal, elaborado con especias selectas. Perfecto para acompañar cualquier parrillada con su sabor intenso.",
   },
   {
     id: 4,
@@ -87,10 +89,9 @@ const products = [
     inStock: true,
     sku: "EMB004",
     tags: ["Chorizo", "Pollo", "Ahumado", "Saludable"],
-    rating: 2,
+    rating: 5,
     description:
-      "Nuestro chorizo de pollo ahumado por 72 horas, es un producto único en colombia atrevete a probarlo lo mejor de lo mejor parce.",
-
+      "Chorizo de pollo ahumado, opción más saludable sin sacrificar sabor. Elaborado con pollo de primera calidad y proceso de ahumado tradicional.",
   },
   {
     id: 5,
@@ -98,7 +99,7 @@ const products = [
     price: 16000.0,
     category: "CARNES",
     subcategory: "NACIONALES",
-    images: [
+     images: [
       "https://cardiso.co/wp-content/uploads/2023/03/Costilla-de-Cerdo-Cardiso-scaled.jpg",
       "https://www.mundocarnico.com/wp-content/uploads/2021/12/COSTILLA-AHUMADA.png",
     ],
@@ -106,12 +107,11 @@ const products = [
     inStock: true,
     sku: "CAR005",
     tags: ["Costillas", "Cerdo", "Ahumadas", "BBQ"],
-    rating: 5,
+    rating: 4,
     description:
-      "Clásico asado de tira, corte tradicional argentino perfecto para compartir en familia. Con el equilibrio perfecto entre carne y grasa, garantiza una cocción uniforme y un sabor inigualable.",
-
+      "Costillas de cerdo ahumadas, perfectas para BBQ. Carne tierna que se desprende del hueso, con sabor ahumado intenso y delicioso.",
   },
-
+ 
 ]
 
 const categories = [
@@ -120,7 +120,6 @@ const categories = [
   { name: "ACHURAS", count: 4, image: "/placeholder.svg?height=300&width=300" },
   { name: "CARBON, SAL Y SALSAS", count: 15, image: "/placeholder.svg?height=300&width=300" },
 ]
-
 
 interface CartItem {
   id: number
@@ -151,30 +150,45 @@ export default function LaParritecaStore() {
   })
   const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  // Detectar si es móvil
   useEffect(() => {
     const checkIsMobile = () => {
       const newIsMobile = window.innerWidth < 768
-
-      // Solo actualizar si hay un cambio
-      setIsMobile((prev) => {
-        if (prev !== newIsMobile) {
-          // Reset estados al cambiar de vista
-          setMobileMenuOpen(false)
-          setCartOpen(false)
-          setShowSearchResults(false)
-          setShowAllSearchResults(false)
-          setShowContactForm(false)
-          setShowCustomerForm(false)
-        }
-        return newIsMobile
-      })
+      if (newIsMobile !== isMobile) {
+        // Reset estados cuando cambia el tamaño de pantalla
+        setMobileMenuOpen(false)
+        setCartOpen(false)
+        setShowSearchResults(false)
+        setShowAllSearchResults(false)
+        setShowContactForm(false)
+        setShowCustomerForm(false)
+      }
+      setIsMobile(newIsMobile)
     }
 
     checkIsMobile()
     window.addEventListener("resize", checkIsMobile)
 
     return () => window.removeEventListener("resize", checkIsMobile)
+  }, [isMobile])
+ useEffect(() => {
+    const checkIsMobile = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+    }
+
+    checkIsMobile()
+    window.addEventListener("resize", checkIsMobile)
+    return () => window.removeEventListener("resize", checkIsMobile)
   }, [])
+  // Limpiar estados cuando cambia entre móvil y desktop
+  useEffect(() => {
+    setMobileMenuOpen(false)
+    setCartOpen(false)
+    setShowSearchResults(false)
+    setShowAllSearchResults(false)
+  }, [isMobile])
 
   // Filtrar productos basado en búsqueda y categoría
   const filteredProducts = useMemo(() => {
@@ -270,9 +284,9 @@ export default function LaParritecaStore() {
     message += `📱 *Teléfono:* ${customerData.phone}\n\n`
     message += `*PRODUCTOS:*\n`
     cart.forEach((item) => {
-      message += `• ${item.name} - Cantidad: ${item.quantity} - $ ${(item.price * item.quantity).toFixed(2)}\n`
+      message += `• ${item.name} - Cantidad: ${item.quantity} - $${formatPrice(item.price * item.quantity)}\n`
     })
-    message += `\n💰 *Total: $ ${cartTotal.toFixed(2)}*`
+    message += `\n💰 *Total: $${formatPrice(cartTotal)}*`
     if (customerData.notes) {
       message += `\n\n📝 *Notas:* ${customerData.notes}`
     }
@@ -282,16 +296,33 @@ export default function LaParritecaStore() {
   // Enviar pedido por WhatsApp
   const sendWhatsAppOrder = (customerData: any) => {
     const message = generateWhatsAppMessage(customerData)
-    const whatsappUrl = `https://wa.me/573001234567?text=${message}`
+    const whatsappUrl = `https://wa.me/573224080321?text=${message}`
     window.open(whatsappUrl, "_blank")
     setShowCustomerForm(false)
     setCart([]) // Limpiar carrito después del pedido
   }
 
-  // Continuar con pedido
+  // Continuar con pedido - asegurar que siempre funcione
   const handleContinueOrder = () => {
     setCartOpen(false)
     setShowCustomerForm(true)
+    // Asegurar que otros overlays no interfieran
+    setShowSearchResults(false)
+    setShowAllSearchResults(false)
+    setShowContactForm(false)
+    setMobileMenuOpen(false)
+
+    // Forzar actualización del estado
+    setTimeout(() => {
+      setShowCustomerForm(true)
+    }, 100)
+  }
+
+  // Función para ir a producto desde búsqueda
+  const goToProduct = (product: (typeof products)[0]) => {
+    setSelectedProduct(product)
+    setShowSearchResults(false)
+    setSearchTerm("")
   }
 
   // Si hay un producto seleccionado, mostrar la vista del producto
@@ -301,6 +332,17 @@ export default function LaParritecaStore() {
         product={selectedProduct}
         onBack={() => setSelectedProduct(null)}
         onAddToCart={addToCartWithQuantity}
+        cart={cart}
+        cartTotal={cartTotal}
+        cartItemsCount={cartItemsCount}
+        onUpdateCartQuantity={updateCartQuantity}
+        onContinueOrder={handleContinueOrder}
+        onGoToProduct={goToProduct}
+        products={products}
+        formatPrice={formatPrice}
+        showCustomerForm={showCustomerForm}
+        onCloseCustomerForm={() => setShowCustomerForm(false)}
+        onSubmitOrder={sendWhatsAppOrder}
       />
     )
   }
@@ -405,7 +447,7 @@ export default function LaParritecaStore() {
                             />
                             <div className="flex-1">
                               <p className="font-medium text-sm">{item.name}</p>
-                              <p className="text-green-600 font-bold">$ {item.price.toFixed(2)}</p>
+                              <p className="text-green-600 font-bold">${formatPrice(item.price)}</p>
                             </div>
                             <div className="flex items-center space-x-2">
                               <Button
@@ -428,7 +470,7 @@ export default function LaParritecaStore() {
                         ))}
                         <div className="border-t pt-4">
                           <div className="flex justify-between items-center mb-4">
-                            <span className="font-bold text-lg">Total: $ {cartTotal.toFixed(2)}</span>
+                            <span className="font-bold text-lg">Total: ${formatPrice(cartTotal)}</span>
                           </div>
                           <Button onClick={handleContinueOrder} className="w-full bg-green-600 hover:bg-green-700">
                             <MessageCircle className="w-4 h-4 mr-2" />
@@ -448,7 +490,7 @@ export default function LaParritecaStore() {
         <HeroCarousel />
 
         {/* Barra de búsqueda separada */}
-        <div className="bg-gray-100 px-4 py-3">
+        <div className="bg-gray-100 px-4 py-3 relative">
           <div className="flex items-center space-x-2">
             <Input
               type="text"
@@ -459,6 +501,7 @@ export default function LaParritecaStore() {
                 setShowSearchResults(e.target.value.length > 0)
                 setShowAllSearchResults(false)
               }}
+              onFocus={() => setShowSearchResults(searchTerm.length > 0)}
               className="flex-1 bg-white text-black border-0 rounded-none h-12"
             />
             <Button
@@ -473,6 +516,36 @@ export default function LaParritecaStore() {
               <Search className="w-5 h-5" />
             </Button>
           </div>
+
+          {/* Resultados de búsqueda móvil */}
+          {showSearchResults && searchResults.length > 0 && (
+            <div className="absolute top-full left-4 right-4 bg-white text-black mt-1 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+              {searchResults.map((product) => (
+                <div
+                  key={product.id}
+                  className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 flex items-center space-x-3"
+                  onClick={() => goToProduct(product)}
+                >
+                  <Image
+                    src={product.images[0] || "/placeholder.svg"}
+                    alt={product.name}
+                    width={40}
+                    height={40}
+                    className="rounded"
+                  />
+                  <div className="flex-1">
+                    <p className="font-medium text-sm">{product.name}</p>
+                    <p className="text-green-600 font-bold">${formatPrice(product.price)}</p>
+                  </div>
+                  {!product.inStock && (
+                    <Badge variant="destructive" className="text-xs">
+                      Sin stock
+                    </Badge>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Breadcrumb y filtros */}
@@ -509,70 +582,43 @@ export default function LaParritecaStore() {
         {/* Productos */}
         <div className="px-4 py-6">
           <div className="grid grid-cols-2 gap-4">
-            {filteredProducts.map((product) => (
-              <Card key={product.id} className="bg-black border-gray-800 flex flex-col justify-between">
-                <CardContent className="flex flex-col h-full p-0">
-                  <div className="cursor-pointer flex-1" onClick={() => setSelectedProduct(product)}>
-                    <div className="relative">
-                      <Image
-                        src={product.images[0] || "/placeholder.svg"}
-                        alt={product.name}
-                        width={200}
-                        height={200}
-                        className="w-full h-40 object-cover"
-                      />
-                      {!product.inStock && (
-                        <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
-                          <div className="bg-white text-black px-4 py-2 font-bold text-sm">SIN EXISTENCIAS</div>
-                        </div>
-                      )}
+            {(showAllSearchResults ? filteredProducts : selectedCategory ? filteredProducts : products).map(
+              (product) => (
+                <Card key={product.id} className="bg-black border-gray-800 overflow-hidden">
+                  <CardContent className="p-0">
+                    <div className="cursor-pointer" onClick={() => setSelectedProduct(product)}>
+                      <div className="relative">
+                        <Image
+                          src={product.images[0] || "/placeholder.svg"}
+                          alt={product.name}
+                          width={200}
+                          height={200}
+                          className="w-full h-40 object-cover"
+                        />
+                        {!product.inStock && (
+                          <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
+                            <div className="bg-white text-black px-4 py-2 font-bold text-sm">SIN EXISTENCIAS</div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3">
+                        {/* Tag arriba del nombre */}
+                        {product.subcategory && (
+                          <div className="text-gray-400 text-xs font-medium mb-1 uppercase">{product.subcategory}</div>
+                        )}
+                        <h3 className="font-bold text-sm mb-2 text-white leading-tight">{product.name}</h3>
+                        <p className="text-white font-bold text-lg mt-2">${formatPrice(product.price)}</p>
+                      </div>
                     </div>
-                    <div className="p-3">
-                      {product.subcategory && (
-                        <div className="text-gray-400 text-xs font-medium mb-1 uppercase">
-                          {product.subcategory}
-                        </div>
-                      )}
-                      <h3 className="font-bold text-sm mb-2 text-white leading-tight line-clamp-2">
-                        {product.name}
-                      </h3>
-                      <p className="text-white font-bold text-lg mt-2">
-                        $ {product.price.toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-
-                  {product.inStock && (
-                    <div className="p-3 pt-0">
-                      <Button
-                        onClick={() => addToCartWithQuantity(product, 1)}
-                        className="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-md h-10"
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        Agregar
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-
-            ))}
+                  </CardContent>
+                </Card>
+              ),
+            )}
           </div>
         </div>
 
         {/* Footer */}
         <Footer />
-
-        {/* Formulario de datos del cliente */}
-        {showCustomerForm && (
-          <CustomerForm
-            cart={cart}
-            cartTotal={cartTotal}
-            onClose={() => setShowCustomerForm(false)}
-            onSubmit={sendWhatsAppOrder}
-          />
-        )}
 
         {/* Sección de contacto */}
         {showContactForm && <ContactSection onClose={() => setShowContactForm(false)} />}
@@ -580,7 +626,7 @@ export default function LaParritecaStore() {
         {/* Botón flotante de WhatsApp */}
         <div className="fixed bottom-6 right-6 z-50">
           <Button
-            onClick={() => window.open("https://wa.me/573001234567", "_blank")}
+            onClick={() => window.open("https://wa.me/573224080321", "_blank")}
             className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg"
           >
             <MessageCircle className="w-6 h-6" />
@@ -678,11 +724,7 @@ export default function LaParritecaStore() {
                         <div
                           key={product.id}
                           className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 flex items-center space-x-3"
-                          onClick={() => {
-                            addToCart(product)
-                            setShowSearchResults(false)
-                            setSearchTerm("")
-                          }}
+                          onClick={() => goToProduct(product)}
                         >
                           <Image
                             src={product.images[0] || "/placeholder.svg"}
@@ -693,7 +735,7 @@ export default function LaParritecaStore() {
                           />
                           <div className="flex-1">
                             <p className="font-medium text-sm">{product.name}</p>
-                            <p className="text-green-600 font-bold">$ {product.price.toFixed(2)}</p>
+                            <p className="text-green-600 font-bold">${formatPrice(product.price)}</p>
                           </div>
                           {!product.inStock && (
                             <Badge variant="destructive" className="text-xs">
@@ -711,7 +753,7 @@ export default function LaParritecaStore() {
                   <SheetTrigger asChild>
                     <Button variant="outline" className="relative bg-transparent">
                       <ShoppingCart className="w-4 h-4 mr-2" />
-                      CARRITO / $ {cartTotal.toFixed(2)}
+                      CARRITO / ${formatPrice(cartTotal)}
                       {cartItemsCount > 0 && (
                         <Badge className="absolute -top-2 -right-2 bg-red-600 text-xs px-1 min-w-[1.25rem] h-5">
                           {cartItemsCount}
@@ -739,7 +781,7 @@ export default function LaParritecaStore() {
                               />
                               <div className="flex-1">
                                 <p className="font-medium text-sm">{item.name}</p>
-                                <p className="text-green-600 font-bold">$ {item.price.toFixed(2)}</p>
+                                <p className="text-green-600 font-bold">${formatPrice(item.price)}</p>
                               </div>
                               <div className="flex items-center space-x-2">
                                 <Button
@@ -762,7 +804,7 @@ export default function LaParritecaStore() {
                           ))}
                           <div className="border-t pt-4">
                             <div className="flex justify-between items-center mb-4">
-                              <span className="font-bold text-lg">Total: $ {cartTotal.toFixed(2)}</span>
+                              <span className="font-bold text-lg">Total: ${formatPrice(cartTotal)}</span>
                             </div>
                             <Button onClick={handleContinueOrder} className="w-full bg-green-600 hover:bg-green-700">
                               <MessageCircle className="w-4 h-4 mr-2" />
@@ -786,55 +828,67 @@ export default function LaParritecaStore() {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-2 text-white">TODOS LOS PRODUCTOS DISPONIBLES</h2>
-              <p className="text-gray-400">CATÁLOGO COMPLETO</p>
+              <h2 className="text-3xl font-bold mb-2 text-white">
+                {showAllSearchResults && searchTerm
+                  ? `RESULTADOS PARA "${searchTerm}"`
+                  : selectedCategory
+                    ? selectedCategory
+                    : "TODOS LOS PRODUCTOS DISPONIBLES"}
+              </h2>
+              <p className="text-gray-400">
+                {showAllSearchResults && searchTerm
+                  ? `${filteredProducts.length} productos encontrados`
+                  : "CATÁLOGO COMPLETO"}
+              </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <Card key={product.id} className="bg-gray-900 border-gray-700 overflow-hidden flex flex-col h-full">
-                  <CardContent className="p-0 flex flex-col h-full">
-                    <div className="cursor-pointer flex-1 flex flex-col" onClick={() => setSelectedProduct(product)}>
-                      <div className="relative">
-                        <Image
-                          src={product.images[0] || "/placeholder.svg"}
-                          alt={product.name}
-                          width={300}
-                          height={200}
-                          className="w-full h-48 object-cover"
-                        />
-                        {!product.inStock && (
-                          <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
-                            <Badge variant="destructive">SIN EXISTENCIAS</Badge>
-                          </div>
-                        )}
+              {(showAllSearchResults ? filteredProducts : selectedCategory ? filteredProducts : products).map(
+                (product) => (
+                  <Card key={product.id} className="bg-gray-900 border-gray-700 overflow-hidden flex flex-col h-full">
+                    <CardContent className="p-0 flex flex-col h-full">
+                      <div className="cursor-pointer flex-1 flex flex-col" onClick={() => setSelectedProduct(product)}>
+                        <div className="relative">
+                          <Image
+                            src={product.images[0] || "/placeholder.svg"}
+                            alt={product.name}
+                            width={300}
+                            height={200}
+                            className="w-full h-48 object-cover"
+                          />
+                          {!product.inStock && (
+                            <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
+                              <Badge variant="destructive">SIN EXISTENCIAS</Badge>
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-4 flex-1 flex flex-col">
+                          {/* Tag arriba del nombre */}
+                          {product.subcategory && (
+                            <div className="text-gray-400 text-xs font-medium mb-2 uppercase tracking-wide">
+                              {product.subcategory}
+                            </div>
+                          )}
+                          <h3 className="font-bold text-sm mb-3 text-white leading-tight flex-1">{product.name}</h3>
+                          <p className="text-green-400 font-bold text-lg mb-4">${formatPrice(product.price)}</p>
+                        </div>
                       </div>
-                      <div className="p-4 flex-1 flex flex-col">
-                        {/* Tag arriba del nombre */}
-                        {product.subcategory && (
-                          <div className="text-gray-400 text-xs font-medium mb-2 uppercase tracking-wide">
-                            {product.subcategory}
-                          </div>
-                        )}
-                        <h3 className="font-bold text-sm mb-3 text-white leading-tight flex-1">{product.name}</h3>
-                        <p className="text-green-400 font-bold text-lg mb-4">$ {product.price.toFixed(2)}</p>
+                      <div className="px-4 pb-4 mt-auto">
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            addToCart(product)
+                          }}
+                          disabled={!product.inStock}
+                          className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600 h-11 font-semibold"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Agregar al carrito
+                        </Button>
                       </div>
-                    </div>
-                    <div className="px-4 pb-4 mt-auto">
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          addToCart(product)
-                        }}
-                        disabled={!product.inStock}
-                        className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600 h-11 font-semibold"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Agregar al carrito
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ),
+              )}
             </div>
           </div>
         </section>
@@ -842,23 +896,13 @@ export default function LaParritecaStore() {
         {/* Footer */}
         <Footer />
 
-        {/* Formulario de datos del cliente */}
-        {showCustomerForm && (
-          <CustomerForm
-            cart={cart}
-            cartTotal={cartTotal}
-            onClose={() => setShowCustomerForm(false)}
-            onSubmit={sendWhatsAppOrder}
-          />
-        )}
-
         {/* Sección de contacto */}
         {showContactForm && <ContactSection onClose={() => setShowContactForm(false)} />}
 
         {/* Botón flotante de WhatsApp */}
         <div className="fixed bottom-6 right-6 z-50">
           <Button
-            onClick={() => window.open("https://wa.me/573001234567", "_blank")}
+            onClick={() => window.open("https://wa.me/573224080321", "_blank")}
             className="bg-green-600 hover:bg-green-700 rounded-full w-14 h-14 shadow-lg"
           >
             <MessageCircle className="w-6 h-6" />

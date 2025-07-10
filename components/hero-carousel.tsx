@@ -4,15 +4,14 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
 const heroSlides = [
   {
     id: 1,
     image: "https://www.tienda.parriteca.com/wp-content/uploads/2022/11/portada-tienda-parriteca.webp",
-    title: "Ahumados El establo ",
-    subtitle: "Lo mejor de lo mejor parce.",
+    title: "Ahumados El establo \nLo mejor de lo mejor parce..",
+    subtitle: "",
   },
-
+  
 ]
 
 export function HeroCarousel() {

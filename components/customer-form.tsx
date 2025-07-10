@@ -113,9 +113,16 @@ interface CustomerFormProps {
   cartTotal: number
   onClose: () => void
   onSubmit: (customerData: any) => void
+  formatPrice?: (price: number) => string
 }
 
-export function CustomerForm({ cart, cartTotal, onClose, onSubmit }: CustomerFormProps) {
+export default function CustomerForm({
+  cart,
+  cartTotal,
+  onClose,
+  onSubmit,
+  formatPrice = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+}: CustomerFormProps) {
   const [customerData, setCustomerData] = useState({
     name: "",
     phone: "",
@@ -234,7 +241,7 @@ export function CustomerForm({ cart, cartTotal, onClose, onSubmit }: CustomerFor
 
             <div className="border-t pt-4">
               <div className="flex justify-between items-center mb-4">
-                <span className="font-bold">Total: ${cartTotal.toFixed(2)}</span>
+                <span className="font-bold">Total: ${formatPrice(cartTotal)}</span>
                 <span className="text-sm text-gray-600">
                   {cart.reduce((total, item) => total + item.quantity, 0)} productos
                 </span>

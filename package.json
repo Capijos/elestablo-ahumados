@@ -7,7 +7,7 @@
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
-    "perso": "next build &&  next start"
+    "perso": "next build && next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
