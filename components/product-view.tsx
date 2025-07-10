@@ -24,6 +24,8 @@ interface Product {
   description: string
 }
 
+
+
 interface CartItem {
   id: number
   name: string
@@ -56,14 +58,14 @@ export function ProductView({
   cart = [],
   cartTotal = 0,
   cartItemsCount = 0,
-  onUpdateCartQuantity = () => {},
-  onContinueOrder = () => {},
-  onGoToProduct = () => {},
+  onUpdateCartQuantity = () => { },
+  onContinueOrder = () => { },
+  onGoToProduct = () => { },
   products = [],
   formatPrice = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
   showCustomerForm = false,
-  onCloseCustomerForm = () => {},
-  onSubmitOrder = () => {},
+  onCloseCustomerForm = () => { },
+  onSubmitOrder = () => { },
 }: ProductViewProps) {
   const [quantity, setQuantity] = useState(1)
   const [showSuccess, setShowSuccess] = useState(false)
@@ -75,8 +77,7 @@ export function ProductView({
 
   useEffect(() => {
     const checkIsMobile = () => {
-      const mobile = window.innerWidth < 768
-      setIsMobile(mobile)
+      setIsMobile(window.innerWidth < 768)
     }
 
     checkIsMobile()
@@ -123,7 +124,7 @@ export function ProductView({
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-white font-bold text-lg">EA</span>
+            <span className="text-white font-bold text-lg">LP</span>
           </div>
           <p className="text-gray-400">Cargando...</p>
         </div>
@@ -143,10 +144,10 @@ export function ProductView({
 
               <div className="flex items-center space-x-2">
                 <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">EA</span>
+                  <span className="text-white font-bold">LP</span>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-bold text-white">EL ESTABLO AHUMADOS</div>
+                  <div className="text-lg font-bold text-white">LA PARRITECA</div>
                 </div>
               </div>
 
@@ -273,17 +274,19 @@ export function ProductView({
           </div>
         )}
 
-        <div className="p-4 space-y-4">
+        {/* Contenido principal con padding bottom para el overlay */}
+        <div className="p-4 space-y-4 pb-32">
           <div className="bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl p-3 backdrop-blur-sm border border-gray-700/30">
             <ProductImageCarousel
               images={product.images}
               productName={product.name}
               inStock={product.inStock}
-              className="w-full h-full"
+              className="w-full h-64"
             />
           </div>
 
-          <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30">
+          <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30 space-y-4">
+            {/* Cabecera */}
             <div className="text-center space-y-3">
               <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">{product.category}</Badge>
               <h2 className="text-lg font-bold text-white leading-tight">{product.name}</h2>
@@ -296,9 +299,8 @@ export function ProductView({
                 )}
               </div>
             </div>
-          </div>
 
-          <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30 space-y-4">
+            {/* Detalles */}
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
                 <span className="text-gray-400 block">SKU</span>
@@ -312,6 +314,7 @@ export function ProductView({
               </div>
             </div>
 
+            {/* Características */}
             <div>
               <span className="text-gray-400 block mb-2">Características</span>
               <div className="flex flex-wrap gap-1">
@@ -326,57 +329,79 @@ export function ProductView({
               </div>
             </div>
 
+            {/* Descripción */}
             <div>
               <span className="text-gray-400 block mb-2">Descripción</span>
               <p className="text-white text-sm leading-relaxed">{product.description}</p>
             </div>
           </div>
 
-          {product.inStock && (
-            <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30 space-y-4">
-              <div className="flex items-center justify-center space-x-4">
-                <span className="text-gray-400 text-sm">Cantidad:</span>
-                <div className="flex items-center space-x-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                    className="border-gray-600 text-white hover:bg-gray-700 w-10 h-10 text-lg font-bold rounded-xl bg-gray-800/50"
-                  >
-                    -
-                  </Button>
-                  <div className="w-12 h-10 bg-gray-800/50 rounded-xl flex items-center justify-center border border-gray-600">
-                    <span className="text-lg font-bold text-white">{quantity}</span>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="border-gray-600 text-white hover:bg-gray-700 w-10 h-10 text-lg font-bold rounded-xl bg-gray-800/50"
-                  >
-                    +
-                  </Button>
+        </div>
+
+        {/* Overlay fijo en la parte inferior para agregar al carrito */}
+        {product.inStock && (
+          <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-sm border-t border-gray-700 p-4 z-50">
+            <div className="flex items-center justify-between space-x-4">
+              {/* Selector de cantidad */}
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
+                  className="border-gray-600 text-white hover:bg-gray-700 w-10 h-10 text-lg font-bold rounded-xl bg-gray-800/50"
+                >
+                  -
+                </Button>
+                <div className="w-12 h-10 bg-gray-800/50 rounded-xl flex items-center justify-center border border-gray-600">
+                  <span className="text-lg font-bold text-white">{quantity}</span>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="border-gray-600 text-white hover:bg-gray-700 w-10 h-10 text-lg font-bold rounded-xl bg-gray-800/50"
+                >
+                  +
+                </Button>
               </div>
 
+              {/* Botón agregar al carrito */}
               <Button
                 onClick={handleAddToCart}
-                className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-12 text-lg font-bold rounded-xl shadow-lg transition-all duration-300"
+                className="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white h-12 text-base font-bold rounded-xl shadow-lg transition-all duration-300"
               >
                 <ShoppingCart className="w-4 h-4 mr-2" />
-                Agregar ${formatPrice(product.price * quantity)}
+                AÑADIR AL CARRITO
               </Button>
             </div>
-          )}
 
-          {!product.inStock && (
-            <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/40 rounded-2xl p-4 backdrop-blur-sm border border-gray-700/30">
-              <Button disabled className="w-full h-12 rounded-xl bg-gray-700 text-gray-400">
-                Producto no disponible
-              </Button>
+            {/* Precio total */}
+            <div className="text-center mt-2">
+              <span className="text-white text-sm">
+                Total: <span className="font-bold text-green-400">${formatPrice(product.price * quantity)}</span>
+              </span>
             </div>
-          )}
+          </div>
+        )}
+
+        {/* Mensaje cuando no hay stock */}
+        {!product.inStock && (
+          <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-sm border-t border-gray-700 p-4 z-50">
+            <Button disabled className="w-full h-12 rounded-xl bg-gray-700 text-gray-400">
+              Producto no disponible
+            </Button>
+          </div>
+        )}
+
+        {/* Botón flotante de WhatsApp - siempre visible */}
+        <div className="fixed bottom-[8rem] right-4 z-50">
+          <Button
+            onClick={() => window.open("https://wa.me/573224080321", "_blank")}
+            className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg"
+          >
+            <MessageCircle className="w-6 h-6" />
+          </Button>
         </div>
 
         {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
@@ -395,7 +420,7 @@ export function ProductView({
     )
   }
 
-  // Vista desktop
+  // Vista desktop (sin cambios)
   return (
     <div className="min-h-screen text-white relative">
       <div
@@ -415,9 +440,9 @@ export function ProductView({
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">EA</span>
+                    <span className="text-white font-bold text-lg">LP</span>
                   </div>
-                  <span className="text-2xl font-bold">EL ESTABLO AHUMADOS</span>
+                  <span className="text-2xl font-bold">LA PARRITECA</span>
                 </div>
 
                 <nav className="flex space-x-8">
@@ -573,7 +598,7 @@ export function ProductView({
         <div className="container mx-auto px-4 py-8">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <div className="bg-gradient-to-br from-gray-900/40 to-black/40 rounded-2xl p-6 backdrop-blur-sm border border-gray-700/30">
-              <ProductImageCarousel images={product.images} productName={product.name} inStock={product.inStock} />
+              <ProductImageCarousel images={product.images} productName={product.name} inStock={product.inStock} className="h-full" />
             </div>
 
             <div className="space-y-6">

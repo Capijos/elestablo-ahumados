@@ -13,7 +13,12 @@ interface ProductImageCarouselProps {
   className?: string
 }
 
-export function ProductImageCarousel({ images, productName, inStock, className = "" }: ProductImageCarouselProps) {
+export function ProductImageCarousel({
+  images,
+  productName,
+  inStock,
+  className = "",
+}: ProductImageCarouselProps) {
   const [currentImage, setCurrentImage] = useState(0)
 
   const nextImage = () => {
@@ -28,15 +33,15 @@ export function ProductImageCarousel({ images, productName, inStock, className =
     setCurrentImage(index)
   }
 
+  // Mostrar placeholder si no hay imágenes
   if (images.length === 0) {
     return (
-      <div className={`relative ${className}`}>
+      <div className={`relative w-full h-full rounded-lg overflow-hidden ${className}`}>
         <Image
-          src="/placeholder.svg?height=400&width=400"
+          src="/placeholder.svg"
           alt={productName}
-          width={400}
-          height={400}
-          className="w-full h-full object-cover rounded-lg"
+          fill
+          className="object-cover"
         />
         {!inStock && (
           <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center rounded-lg">
@@ -50,16 +55,16 @@ export function ProductImageCarousel({ images, productName, inStock, className =
   }
 
   return (
-    <div className={`relative ${className}`}>
-      {/* Main Image */}
-      <div className="relative">
+    <div className={`relative flex flex-col ${className}`}>
+      {/* Imagen principal (reserva espacio para miniaturas abajo) */}
+      <div className="relative w-full h-[calc(100%-80px)] rounded-lg overflow-hidden">
         <Image
           src={images[currentImage] || "/placeholder.svg"}
           alt={`${productName} - Imagen ${currentImage + 1}`}
-          width={600}
-          height={600}
-          className="w-full h-96 lg:h-[500px] object-cover rounded-lg"
+          fill
+          className="object-cover rounded-lg"
         />
+
         {!inStock && (
           <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center rounded-lg">
             <Badge variant="destructive" className="text-xl px-6 py-3">
@@ -68,7 +73,6 @@ export function ProductImageCarousel({ images, productName, inStock, className =
           </div>
         )}
 
-        {/* Navigation Arrows - Only show if more than 1 image */}
         {images.length > 1 && (
           <>
             <Button
@@ -90,7 +94,6 @@ export function ProductImageCarousel({ images, productName, inStock, className =
           </>
         )}
 
-        {/* Image Counter */}
         {images.length > 1 && (
           <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
             {currentImage + 1} / {images.length}
@@ -98,15 +101,14 @@ export function ProductImageCarousel({ images, productName, inStock, className =
         )}
       </div>
 
-      {/* Thumbnail Navigation - Only show if more than 1 image */}
+      {/* Miniaturas sin scroll */}
       {images.length > 1 && (
-        <div className="flex space-x-2 mt-4 overflow-x-auto">
+        <div className="flex gap-2 mt-2 pt-2 flex-wrap justify-center">
           {images.map((image, index) => (
             <button
               key={index}
-              className={`flex-shrink-0 w-16 h-16 rounded border-2 overflow-hidden ${
-                index === currentImage ? "border-red-600" : "border-gray-300"
-              }`}
+              className={`w-16 h-16 rounded border-2 overflow-hidden ${index === currentImage ? "border-red-600" : "border-gray-300"
+                }`}
               onClick={() => goToImage(index)}
             >
               <Image
