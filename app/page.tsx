@@ -99,7 +99,7 @@ const products = [
     price: 16000.0,
     category: "CARNES",
     subcategory: "NACIONALES",
-     images: [
+    images: [
       "https://cardiso.co/wp-content/uploads/2023/03/Costilla-de-Cerdo-Cardiso-scaled.jpg",
       "https://www.mundocarnico.com/wp-content/uploads/2021/12/COSTILLA-AHUMADA.png",
     ],
@@ -111,7 +111,7 @@ const products = [
     description:
       "Costillas de cerdo ahumadas, perfectas para BBQ. Carne tierna que se desprende del hueso, con sabor ahumado intenso y delicioso.",
   },
- 
+
 ]
 
 const categories = [
@@ -152,36 +152,32 @@ export default function LaParritecaStore() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Detectar si es móvil
+
   useEffect(() => {
-    const checkIsMobile = () => {
-      const newIsMobile = window.innerWidth < 768
-      if (newIsMobile !== isMobile) {
-        // Reset estados cuando cambia el tamaño de pantalla
-        setMobileMenuOpen(false)
-        setCartOpen(false)
-        setShowSearchResults(false)
-        setShowAllSearchResults(false)
-        setShowContactForm(false)
-        setShowCustomerForm(false)
-      }
-      setIsMobile(newIsMobile)
-    }
+    const mql = window.matchMedia("(max-width: 767px)")
 
-    checkIsMobile()
-    window.addEventListener("resize", checkIsMobile)
-
-    return () => window.removeEventListener("resize", checkIsMobile)
-  }, [isMobile])
- useEffect(() => {
-    const checkIsMobile = () => {
-      const mobile = window.innerWidth < 768
+    const handleResize = () => {
+      const mobile = mql.matches
       setIsMobile(mobile)
+
+      // Reset solo si cambia el modo
+      setMobileMenuOpen(false)
+      setCartOpen(false)
+      setShowSearchResults(false)
+      setShowAllSearchResults(false)
+      setShowContactForm(false)
+      setShowCustomerForm(false)
     }
 
-    checkIsMobile()
-    window.addEventListener("resize", checkIsMobile)
-    return () => window.removeEventListener("resize", checkIsMobile)
+    handleResize() // Inicial
+
+    mql.addEventListener("change", handleResize)
+
+    return () => {
+      mql.removeEventListener("change", handleResize)
+    }
   }, [])
+
   // Limpiar estados cuando cambia entre móvil y desktop
   useEffect(() => {
     setMobileMenuOpen(false)
@@ -411,7 +407,6 @@ export default function LaParritecaStore() {
                 </div>
                 <div className="text-center">
                   <div className="text-xl font-bold text-white">EL ESTABLO AHUMADOS</div>
-                  <div className="text-red-500 text-sm">Tienda</div>
                 </div>
               </div>
 
