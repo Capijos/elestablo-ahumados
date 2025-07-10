@@ -9,27 +9,10 @@ const heroSlides = [
   {
     id: 1,
     image: "https://www.tienda.parriteca.com/wp-content/uploads/2022/11/portada-tienda-parriteca.webp",
-    title: "TODOS LOS PRODUCTOS\nPARA TU PARRILLA.",
-    subtitle: "No hay nada que una buena parrilla no pueda juntar.",
+    title: "Ahumados El establo ",
+    subtitle: "Lo mejor de lo mejor parce.",
   },
-  {
-    id: 2,
-    image: "https://notasdecata.pe/cdn/shop/collections/Ganado_Angus_en_el_rancho_1600x.jpg?v=1611934380",
-    title: "CARNES PREMIUM\nDE LA MEJOR CALIDAD",
-    subtitle: "Cortes selectos importados y nacionales para tu mesa.",
-  },
-  {
-    id: 3,
-    image: "https://artesaniadelarioja.org/wp-content/uploads/2019/10/embutidos-pena-seto-848x480.jpg",
-    title: "EMBUTIDOS ARTESANALES\nTRADICIÓN Y SABOR",
-    subtitle: "Chorizos, morcillas y más, elaborados con recetas tradicionales.",
-  },
-  {
-    id: 4,
-    image: "https://s3.amazonaws.com/arc-wordpress-client-uploads/infobae-wp/wp-content/uploads/2016/10/06132805/iStock_67095589_LARGE.jpg",
-    title: "TODO LO NECESARIO\nPARA TU ASADO PERFECTO",
-    subtitle: "Carbón, sal parrillera, chimichurri y todos los complementos.",
-  },
+
 ]
 
 export function HeroCarousel() {

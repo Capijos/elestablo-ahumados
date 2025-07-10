@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import Image from "next/image"
-import { Search, ShoppingCart, MessageCircle, Plus, Minus, X, Menu } from "lucide-react"
+import { Search, ShoppingCart, MessageCircle, Plus, Minus, Menu, Filter } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -12,6 +12,7 @@ import { CustomerForm } from "@/components/customer-form"
 import { ContactSection } from "@/components/contact-section"
 import { ProductView } from "@/components/product-view"
 import { HeroCarousel } from "@/components/hero-carousel"
+import { Footer } from "@/components/footer"
 
 // Datos de productos
 const products = [
@@ -20,29 +21,36 @@ const products = [
     name: "CHULETA AHUMADA DE CERDO X LIBRA",
     price: 16000.0,
     category: "CARNES",
+    subcategory: "ANGUS USA",
     images: [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmCzk9QeGapDlS4QNZBZa9g3WjaPgYaIyUQ&s",
       "https://meattown.shop/cdn/shop/files/A70FE16D-548B-4FFD-8BAB-7DAB01046DDA.jpg?v=1702441930",
       "https://st4.depositphotos.com/1000605/21794/i/450/depositphotos_217945722-stock-photo-smoked-pork-meat-wooden-background.jpg",
     ],
+
     inStock: true,
     sku: "CAR001",
-    tags: ["Cerdo", "Premium", "USA"],
+    tags: ["Chuleta", "Ahumada", "Cerdo", "Premium"],
+    rating: 5,
     description:
       "Nuestra chuleta de cerdo ahumada por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de chuleta proviene de la costilla del cerdo y, tras el ahumado, adquiere un color rosado característico y un sabor ahumado unico con nuestra salmuera.",
+
   },
   {
     id: 2,
     name: "LOMO DE CERDO AHUMADO IMPORTADO X LIBRA",
     price: 16000.0,
     category: "CARNES",
+    subcategory: "ARGENTINA",
     images: [
       "https://media.falabella.com/tottusPE/40915745_1/w=800,h=800,fit=pad",
       "https://i0.wp.com/entreparrilleros.cl/wp-content/uploads/2024/05/lomo-cerdo-.jpg?fit=810%2C810&ssl=1",
     ],
+
     inStock: true,
-    sku: "EMB002",
-    tags: ["Cerdo", "Lomo", "Finas Hierbas", "Artesanal"],
+    sku: "CAR003",
+    tags: ["Lomo", "Cerdo", "Ahumado", "Importado"],
+    rating: 3,
     description:
       "Nuestra lomo de cerdo ahumado por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de carne proviene  de la parte superior de la espalda justo debajo de las costillas, tras el ahumado, adquiere un color rosado característico y un sabor ahumado único con nuestra salmuera.",
   },
@@ -51,45 +59,57 @@ const products = [
     name: "CHORIZO DE CERDO AHUMADO X LIBRA",
     price: 16000.0,
     category: "EMBUTIDOS Y FIAMBRES",
+    subcategory: "CHORIZOS",
     images: [
       "https://chistorradenavarra.com/wp-content/uploads/%C2%BFQue%CC%81-es-un-chorizo-criollo.jpg",
 
     ],
+
     inStock: true,
-    sku: "CAR003",
-    tags: ["Chorizo", "Cerdo", "Premium", "Parrilla"],
+    sku: "EMB002",
+    tags: ["Chorizo", "Cerdo", "Ahumado", "Artesanal"],
+    rating: 4,
     description:
       "Nuestro chorizo cerdo ahumado por 72 horas es un producto que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, que le da este color y sabor único.",
+
   },
   {
     id: 4,
     name: "CHORIZO DE POLLO AHUMADO X LIBRA",
     price: 16000.0,
     category: "EMBUTIDOS Y FIAMBRES",
+    subcategory: "CHORIZOS",
     images: [
       "https://sofia.com.bo/wp-content/uploads/2021/06/136_chorizo_ahumado_a_granel_1.jpg",
       "https://piorico.com/wp-content/uploads/2020/08/chorizo-parrillero-ahumado-al-vacio2.jpg",
     ],
+
     inStock: true,
     sku: "EMB004",
-    tags: ["Chorizo", "Premium", "Embutido", "Parrilla"],
+    tags: ["Chorizo", "Pollo", "Ahumado", "Saludable"],
+    rating: 2,
     description:
       "Nuestro chorizo de pollo ahumado por 72 horas, es un producto único en colombia atrevete a probarlo lo mejor de lo mejor parce.",
+
   },
   {
     id: 5,
     name: "COSTILLAS AHUMADAS DE CERDO X LIBRA",
     price: 16000.0,
     category: "CARNES",
+    subcategory: "NACIONALES",
     images: [
       "https://cardiso.co/wp-content/uploads/2023/03/Costilla-de-Cerdo-Cardiso-scaled.jpg",
       "https://www.mundocarnico.com/wp-content/uploads/2021/12/COSTILLA-AHUMADA.png",
     ],
+
     inStock: true,
     sku: "CAR005",
-    tags: ["Asado", "Tira", "Costilla", "Parrilla"],
+    tags: ["Costillas", "Cerdo", "Ahumadas", "BBQ"],
+    rating: 5,
     description:
       "Clásico asado de tira, corte tradicional argentino perfecto para compartir en familia. Con el equilibrio perfecto entre carne y grasa, garantiza una cocción uniforme y un sabor inigualable.",
+
   },
 
 ]
@@ -100,6 +120,7 @@ const categories = [
   { name: "ACHURAS", count: 4, image: "/placeholder.svg?height=300&width=300" },
   { name: "CARBON, SAL Y SALSAS", count: 15, image: "/placeholder.svg?height=300&width=300" },
 ]
+
 
 interface CartItem {
   id: number
@@ -118,6 +139,8 @@ export default function LaParritecaStore() {
   const [showCustomerForm, setShowCustomerForm] = useState(false)
   const [showAllSearchResults, setShowAllSearchResults] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
+  const [sortBy, setSortBy] = useState("popularity")
+  const [isMobile, setIsMobile] = useState(false)
   const [customerData, setCustomerData] = useState({
     name: "",
     phone: "",
@@ -127,6 +150,31 @@ export default function LaParritecaStore() {
     notes: "",
   })
   const [selectedProduct, setSelectedProduct] = useState<(typeof products)[0] | null>(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  useEffect(() => {
+    const checkIsMobile = () => {
+      const newIsMobile = window.innerWidth < 768
+
+      // Solo actualizar si hay un cambio
+      setIsMobile((prev) => {
+        if (prev !== newIsMobile) {
+          // Reset estados al cambiar de vista
+          setMobileMenuOpen(false)
+          setCartOpen(false)
+          setShowSearchResults(false)
+          setShowAllSearchResults(false)
+          setShowContactForm(false)
+          setShowCustomerForm(false)
+        }
+        return newIsMobile
+      })
+    }
+
+    checkIsMobile()
+    window.addEventListener("resize", checkIsMobile)
+
+    return () => window.removeEventListener("resize", checkIsMobile)
+  }, [])
 
   // Filtrar productos basado en búsqueda y categoría
   const filteredProducts = useMemo(() => {
@@ -140,8 +188,17 @@ export default function LaParritecaStore() {
       filtered = filtered.filter((product) => product.category === selectedCategory)
     }
 
+    // Ordenar productos
+    if (sortBy === "price-low") {
+      filtered = filtered.sort((a, b) => a.price - b.price)
+    } else if (sortBy === "price-high") {
+      filtered = filtered.sort((a, b) => b.price - a.price)
+    } else if (sortBy === "name") {
+      filtered = filtered.sort((a, b) => a.name.localeCompare(b.name))
+    }
+
     return filtered
-  }, [searchTerm, selectedCategory])
+  }, [searchTerm, selectedCategory, sortBy])
 
   // Productos para mostrar en búsqueda (máximo 5)
   const searchResults = useMemo(() => {
@@ -213,9 +270,9 @@ export default function LaParritecaStore() {
     message += `📱 *Teléfono:* ${customerData.phone}\n\n`
     message += `*PRODUCTOS:*\n`
     cart.forEach((item) => {
-      message += `• ${item.name} - Cantidad: ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`
+      message += `• ${item.name} - Cantidad: ${item.quantity} - $ ${(item.price * item.quantity).toFixed(2)}\n`
     })
-    message += `\n💰 *Total: $${cartTotal.toFixed(2)}*`
+    message += `\n💰 *Total: $ ${cartTotal.toFixed(2)}*`
     if (customerData.notes) {
       message += `\n\n📝 *Notas:* ${customerData.notes}`
     }
@@ -248,6 +305,295 @@ export default function LaParritecaStore() {
     )
   }
 
+  // Vista móvil
+  if (isMobile) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        {/* Header Mobile */}
+        <header className="bg-black border-b border-gray-800 sticky top-0 z-40">
+          <div className="px-4 py-4">
+            <div className="flex items-center justify-between">
+              {/* Menu hamburguesa */}
+              <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="sm" className="p-2">
+                    <Menu className="w-6 h-6 text-white" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="bg-black text-white">
+                  <div className="flex flex-col space-y-6 mt-8">
+                    <button
+                      onClick={() => {
+                        setSelectedCategory(null)
+                        setMobileMenuOpen(false)
+                      }}
+                      className="text-left hover:text-red-500 transition-colors text-lg"
+                    >
+                      INICIO
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedCategory("CARNES")
+                        setMobileMenuOpen(false)
+                      }}
+                      className="text-left hover:text-red-500 transition-colors text-lg"
+                    >
+                      CARNES
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedCategory("EMBUTIDOS Y FIAMBRES")
+                        setMobileMenuOpen(false)
+                      }}
+                      className="text-left hover:text-red-500 transition-colors text-lg"
+                    >
+                      EMBUTIDOS
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowContactForm(true)
+                        setMobileMenuOpen(false)
+                      }}
+                      className="text-left hover:text-red-500 transition-colors text-lg"
+                    >
+                      CONTACTO
+                    </button>
+                  </div>
+                </SheetContent>
+              </Sheet>
+
+              {/* Logo centrado */}
+              <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-3">
+                <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">LP</span>
+                </div>
+                <div className="text-center">
+                  <div className="text-xl font-bold text-white">LA PARRITECA</div>
+                  <div className="text-red-500 text-sm">Tienda</div>
+                </div>
+              </div>
+
+              {/* Carrito */}
+              <Sheet open={cartOpen} onOpenChange={setCartOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" className="relative p-2">
+                    <ShoppingCart className="w-6 h-6 text-white" />
+                    {cartItemsCount > 0 && (
+                      <Badge className="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-2 py-1 min-w-[1.5rem] h-6">
+                        {cartItemsCount}
+                      </Badge>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-full bg-white text-black">
+                  <SheetHeader>
+                    <SheetTitle>Carrito de Compras</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    {cart.length === 0 ? (
+                      <p className="text-gray-500 text-center py-8">Tu carrito está vacío</p>
+                    ) : (
+                      <>
+                        {cart.map((item) => (
+                          <div key={item.id} className="flex items-center space-x-3 p-3 border rounded-lg">
+                            <Image
+                              src={item.image || "/placeholder.svg"}
+                              alt={item.name}
+                              width={50}
+                              height={50}
+                              className="rounded"
+                            />
+                            <div className="flex-1">
+                              <p className="font-medium text-sm">{item.name}</p>
+                              <p className="text-green-600 font-bold">$ {item.price.toFixed(2)}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
+                              >
+                                <Minus className="w-3 h-3" />
+                              </Button>
+                              <span className="w-8 text-center">{item.quantity}</span>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
+                              >
+                                <Plus className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                        <div className="border-t pt-4">
+                          <div className="flex justify-between items-center mb-4">
+                            <span className="font-bold text-lg">Total: $ {cartTotal.toFixed(2)}</span>
+                          </div>
+                          <Button onClick={handleContinueOrder} className="w-full bg-green-600 hover:bg-green-700">
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Continuar con pedido
+                          </Button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+          </div>
+        </header>
+
+        {/* Hero Section Mobile */}
+        <HeroCarousel />
+
+        {/* Barra de búsqueda separada */}
+        <div className="bg-gray-100 px-4 py-3">
+          <div className="flex items-center space-x-2">
+            <Input
+              type="text"
+              placeholder="Buscar..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value)
+                setShowSearchResults(e.target.value.length > 0)
+                setShowAllSearchResults(false)
+              }}
+              className="flex-1 bg-white text-black border-0 rounded-none h-12"
+            />
+            <Button
+              className="bg-red-600 hover:bg-red-700 px-4 py-3 rounded-none h-12"
+              onClick={() => {
+                if (searchTerm) {
+                  setShowAllSearchResults(true)
+                  setShowSearchResults(false)
+                }
+              }}
+            >
+              <Search className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Breadcrumb y filtros */}
+        <div className="bg-black px-4 py-4 border-b border-gray-800">
+          <div className="text-center mb-4">
+            <span className="text-gray-400">INICIO</span>
+            {selectedCategory && (
+              <>
+                <span className="text-gray-400 mx-2">/</span>
+                <span className="text-white font-bold">{selectedCategory}</span>
+              </>
+            )}
+          </div>
+
+          <div className="flex items-center justify-center mb-4">
+            <Filter className="w-4 h-4 mr-2" />
+            <span className="font-bold">BUSCAR</span>
+          </div>
+
+          <div className="max-w-xs mx-auto">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full bg-white text-black px-4 py-3 border-0 text-center"
+            >
+              <option value="popularity">Ordenar por popularidad</option>
+              <option value="price-low">Precio: menor a mayor</option>
+              <option value="price-high">Precio: mayor a menor</option>
+              <option value="name">Ordenar por nombre</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Productos */}
+        <div className="px-4 py-6">
+          <div className="grid grid-cols-2 gap-4">
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="bg-black border-gray-800 flex flex-col justify-between">
+                <CardContent className="flex flex-col h-full p-0">
+                  <div className="cursor-pointer flex-1" onClick={() => setSelectedProduct(product)}>
+                    <div className="relative">
+                      <Image
+                        src={product.images[0] || "/placeholder.svg"}
+                        alt={product.name}
+                        width={200}
+                        height={200}
+                        className="w-full h-40 object-cover"
+                      />
+                      {!product.inStock && (
+                        <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
+                          <div className="bg-white text-black px-4 py-2 font-bold text-sm">SIN EXISTENCIAS</div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-3">
+                      {product.subcategory && (
+                        <div className="text-gray-400 text-xs font-medium mb-1 uppercase">
+                          {product.subcategory}
+                        </div>
+                      )}
+                      <h3 className="font-bold text-sm mb-2 text-white leading-tight line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <p className="text-white font-bold text-lg mt-2">
+                        $ {product.price.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+
+                  {product.inStock && (
+                    <div className="p-3 pt-0">
+                      <Button
+                        onClick={() => addToCartWithQuantity(product, 1)}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold rounded-md h-10"
+                      >
+                        <ShoppingCart className="w-4 h-4 mr-2" />
+                        Agregar
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+
+            ))}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <Footer />
+
+        {/* Formulario de datos del cliente */}
+        {showCustomerForm && (
+          <CustomerForm
+            cart={cart}
+            cartTotal={cartTotal}
+            onClose={() => setShowCustomerForm(false)}
+            onSubmit={sendWhatsAppOrder}
+          />
+        )}
+
+        {/* Sección de contacto */}
+        {showContactForm && <ContactSection onClose={() => setShowContactForm(false)} />}
+
+        {/* Botón flotante de WhatsApp */}
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={() => window.open("https://wa.me/573001234567", "_blank")}
+            className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg"
+          >
+            <MessageCircle className="w-6 h-6" />
+          </Button>
+        </div>
+
+        {/* Overlay para cerrar resultados de búsqueda */}
+        {showSearchResults && <div className="fixed inset-0 z-40" onClick={() => setShowSearchResults(false)} />}
+      </div>
+    )
+  }
+
+  // Vista Desktop
   return (
     <div className="min-h-screen text-white relative">
       <div
@@ -259,21 +605,21 @@ export default function LaParritecaStore() {
           backgroundAttachment: "fixed",
         }}
       />
-      <div className="absolute inset-0 bg-black bg-opacity-60 z-10" />
+      <div className="absolute inset-0 bg-black bg-opacity-10 z-10" />
       <div className="relative z-20">
-        {/* Header */}
+        {/* Header Desktop */}
         <header className="bg-black border-b border-gray-800">
-          <div className="container mx-auto px-4 py-6">
+          <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
                   <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-lg">LP</span>
                   </div>
-                  <span className="text-xl sm:text-2xl font-bold">LA PARRITECA</span>
+                  <span className="text-2xl font-bold">LA PARRITECA</span>
                 </div>
 
-                <nav className="hidden md:flex space-x-8">
+                <nav className="flex space-x-8">
                   <button
                     onClick={() => setSelectedCategory(null)}
                     className="hover:text-red-500 transition-colors text-lg"
@@ -287,36 +633,11 @@ export default function LaParritecaStore() {
                     CONTACTO
                   </button>
                 </nav>
-
-                {/* Menú móvil */}
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="sm" className="md:hidden">
-                      <Menu className="w-5 h-5" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left">
-                    <div className="flex flex-col space-y-4 mt-8">
-                      <button
-                        onClick={() => setSelectedCategory(null)}
-                        className="text-left hover:text-red-500 transition-colors"
-                      >
-                        TIENDA
-                      </button>
-                      <button
-                        onClick={() => setShowContactForm(true)}
-                        className="text-left hover:text-red-500 transition-colors"
-                      >
-                        CONTACTO
-                      </button>
-                    </div>
-                  </SheetContent>
-                </Sheet>
               </div>
 
-              <div className="flex items-center space-x-2 sm:space-x-4">
-                {/* Buscador */}
-                <div className="relative hidden sm:block">
+              <div className="flex items-center space-x-4">
+                {/* Buscador Desktop */}
+                <div className="relative">
                   <div className="flex items-center">
                     <Input
                       type="text"
@@ -334,7 +655,7 @@ export default function LaParritecaStore() {
                           setShowSearchResults(false)
                         }
                       }}
-                      className="w-48 lg:w-64 bg-white text-black"
+                      className="w-64 bg-white text-black"
                     />
                     <Button
                       size="sm"
@@ -385,37 +706,12 @@ export default function LaParritecaStore() {
                   )}
                 </div>
 
-                {/* Buscador móvil */}
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="sm" className="sm:hidden p-2">
-                      <Search className="w-5 h-5" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent>
-                    <div className="mt-8">
-                      <Input
-                        type="text"
-                        placeholder="Buscar productos..."
-                        value={searchTerm}
-                        onChange={(e) => {
-                          setSearchTerm(e.target.value)
-                          setShowAllSearchResults(e.target.value.length > 0)
-                        }}
-                        className="w-full bg-white text-black"
-                      />
-                    </div>
-                  </SheetContent>
-                </Sheet>
-
-                {/* Carrito */}
+                {/* Carrito Desktop */}
                 <Sheet open={cartOpen} onOpenChange={setCartOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="outline" className="relative bg-transparent text-xs sm:text-sm px-2 sm:px-4">
-                      <ShoppingCart className="w-4 h-4 mr-1 sm:mr-2" />
-                      <span className="hidden sm:inline">CARRITO /</span>
-                      <span className="sm:hidden">$</span>
-                      <span className="ml-1">{cartTotal.toFixed(2)}</span>
+                    <Button variant="outline" className="relative bg-transparent">
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      CARRITO / $ {cartTotal.toFixed(2)}
                       {cartItemsCount > 0 && (
                         <Badge className="absolute -top-2 -right-2 bg-red-600 text-xs px-1 min-w-[1.25rem] h-5">
                           {cartItemsCount}
@@ -423,7 +719,7 @@ export default function LaParritecaStore() {
                       )}
                     </Button>
                   </SheetTrigger>
-                  <SheetContent className="w-full sm:w-96">
+                  <SheetContent className="w-96">
                     <SheetHeader>
                       <SheetTitle>Carrito de Compras</SheetTitle>
                     </SheetHeader>
@@ -483,202 +779,68 @@ export default function LaParritecaStore() {
           </div>
         </header>
 
-        {/* Hero Section */}
+        {/* Hero Section Desktop */}
         <HeroCarousel />
 
-        {/* Productos filtrados por búsqueda o categoría */}
-        {(showAllSearchResults || selectedCategory) && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold">
-                  {selectedCategory ? `CATEGORÍA: ${selectedCategory}` : "RESULTADOS DE BÚSQUEDA"}
-                </h2>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSearchTerm("")
-                    setSelectedCategory(null)
-                    setShowSearchResults(false)
-                    setShowAllSearchResults(false)
-                  }}
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Limpiar filtros
-                </Button>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
-                  <Card key={product.id} className="bg-gray-900 border-gray-700">
-                    <CardContent className="p-4">
-                      <div className="cursor-pointer" onClick={() => setSelectedProduct(product)}>
-                        <div className="relative mb-4">
-                          <Image
-                            src={product.images[0] || "/placeholder.svg"}
-                            alt={product.name}
-                            width={200}
-                            height={200}
-                            className="w-full h-48 object-cover rounded"
-                          />
-                          {!product.inStock && (
-                            <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center rounded">
-                              <Badge variant="destructive">SIN EXISTENCIAS</Badge>
-                            </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-sm mb-2 text-white">{product.name}</h3>
-                        <p className="text-green-400 font-bold text-lg mb-3">$ {product.price.toFixed(2)}</p>
+        {/* Productos Desktop */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-2 text-white">TODOS LOS PRODUCTOS DISPONIBLES</h2>
+              <p className="text-gray-400">CATÁLOGO COMPLETO</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {products.map((product) => (
+                <Card key={product.id} className="bg-gray-900 border-gray-700 overflow-hidden flex flex-col h-full">
+                  <CardContent className="p-0 flex flex-col h-full">
+                    <div className="cursor-pointer flex-1 flex flex-col" onClick={() => setSelectedProduct(product)}>
+                      <div className="relative">
+                        <Image
+                          src={product.images[0] || "/placeholder.svg"}
+                          alt={product.name}
+                          width={300}
+                          height={200}
+                          className="w-full h-48 object-cover"
+                        />
+                        {!product.inStock && (
+                          <div className="absolute inset-0 bg-black bg-opacity-10 flex items-center justify-center">
+                            <Badge variant="destructive">SIN EXISTENCIAS</Badge>
+                          </div>
+                        )}
                       </div>
+                      <div className="p-4 flex-1 flex flex-col">
+                        {/* Tag arriba del nombre */}
+                        {product.subcategory && (
+                          <div className="text-gray-400 text-xs font-medium mb-2 uppercase tracking-wide">
+                            {product.subcategory}
+                          </div>
+                        )}
+                        <h3 className="font-bold text-sm mb-3 text-white leading-tight flex-1">{product.name}</h3>
+                        <p className="text-green-400 font-bold text-lg mb-4">$ {product.price.toFixed(2)}</p>
+                      </div>
+                    </div>
+                    <div className="px-4 pb-4 mt-auto">
                       <Button
                         onClick={(e) => {
                           e.stopPropagation()
                           addToCart(product)
                         }}
                         disabled={!product.inStock}
-                        className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600"
+                        className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600 h-11 font-semibold"
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         Agregar al carrito
                       </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
-          </section>
-        )}
+          </div>
+        </section>
 
-        {/* Productos más buscados - Solo mostrar si no hay filtros activos 
-        {!selectedCategory && !showAllSearchResults && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-2">PRODUCTOS MÁS BUSCADOS</h2>
-                <p className="text-gray-400">POPULARES</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {products.slice(0, 4).map((product) => (
-                  <Card key={product.id} className="bg-gray-900 border-gray-700">
-                    <CardContent className="p-4">
-                      <div className="cursor-pointer" onClick={() => setSelectedProduct(product)}>
-                        <div className="relative mb-4">
-                          <Image
-                            src={product.images[0] || "/placeholder.svg"}
-                            alt={product.name}
-                            width={200}
-                            height={200}
-                            className="w-full h-48 object-cover rounded"
-                          />
-                          {!product.inStock && (
-                            <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center rounded">
-                              <Badge variant="destructive">SIN EXISTENCIAS</Badge>
-                            </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-sm mb-2 text-white">{product.name}</h3>
-                        <p className="text-green-400 font-bold text-lg mb-3">$ {product.price.toFixed(2)}</p>
-                      </div>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          addToCart(product)
-                        }}
-                        disabled={!product.inStock}
-                        className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Agregar al carrito
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-        */}
-        {/* Todos los productos disponibles */}
-        {!selectedCategory && !showAllSearchResults && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-2">TODOS LOS PRODUCTOS DISPONIBLES</h2>
-                <p className="text-gray-400">CATÁLOGO COMPLETO</p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {products.map((product) => (
-                  <Card key={product.id} className="bg-gray-900 border-gray-700">
-                    <CardContent className="p-4">
-                      <div className="cursor-pointer" onClick={() => setSelectedProduct(product)}>
-                        <div className="relative mb-4">
-                          <Image
-                            src={product.images[0] || "/placeholder.svg"}
-                            alt={product.name}
-                            width={200}
-                            height={200}
-                            className="w-full h-48 object-cover rounded"
-                          />
-                          {!product.inStock && (
-                            <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center rounded">
-                              <Badge variant="destructive">SIN EXISTENCIAS</Badge>
-                            </div>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-sm mb-2 text-white">{product.name}</h3>
-                        <p className="text-green-400 font-bold text-lg mb-3">$ {product.price.toFixed(2)}</p>
-                      </div>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          addToCart(product)
-                        }}
-                        disabled={!product.inStock}
-                        className="w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-600"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Agregar al carrito
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-        {/* Categorías de productos - Solo mostrar si no hay filtros activos 
-        {!selectedCategory && !showAllSearchResults && (
-          <section className="py-12">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <h2 className="text-2xl sm:text-3xl font-bold">CATEGORÍAS DE PRODUCTOS</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {categories.map((category) => (
-                  <Card
-                    key={category.name}
-                    className="bg-gray-900 border-gray-700 cursor-pointer hover:bg-gray-800 transition-colors"
-                    onClick={() => setSelectedCategory(category.name)}
-                  >
-                    <CardContent className="p-6 text-center">
-                      <Image
-                        src={category.image || "/placeholder.svg"}
-                        alt={category.name}
-                        width={200}
-                        height={200}
-                        className="w-full h-48 object-cover rounded mb-4"
-                      />
-                      <h3 className="font-bold text-lg mb-2 text-white">{category.name}</h3>
-                      <p className="text-gray-400">{category.count} PRODUCTOS</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-        */}
-
-
+        {/* Footer */}
+        <Footer />
 
         {/* Formulario de datos del cliente */}
         {showCustomerForm && (
