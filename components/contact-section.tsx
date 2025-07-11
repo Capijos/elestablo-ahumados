@@ -40,9 +40,8 @@ export function ContactSection({ onClose }: ContactSectionProps) {
                 <div>
                   <h3 className="font-semibold">Teléfonos</h3>
                   <p className="text-gray-600">
-                    WhatsApp: +57 322 408 0321
+                    WhatsApp: +57 300 340 8474
                     <br />
-                    Fijo: (601) 234 5678
                   </p>
                 </div>
               </div>
@@ -79,8 +78,7 @@ export function ContactSection({ onClose }: ContactSectionProps) {
                 <h3 className="font-semibold mb-2">Servicios</h3>
                 <ul className="text-gray-600 text-sm space-y-1">
                   <li>• Domicilios sin costo mínimo</li>
-                  <li>• Cortes personalizados</li>
-                  <li>• Asesoría para tu parrilla</li>
+                   
                   <li>• Productos frescos diarios</li>
                 </ul>
               </div>

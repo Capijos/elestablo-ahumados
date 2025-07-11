@@ -43,8 +43,7 @@ export function Footer() {
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-red-500 flex-shrink-0" />
                 <div className="text-sm text-gray-400">
-                  <p>WhatsApp: +57 300 123 4567</p>
-                  <p>Fijo: (601) 234 5678</p>
+                  <p>WhatsApp: +57 300 340 8474</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
@@ -80,8 +79,7 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-white">Servicios</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>• Cortes personalizados</li>
-              <li>• Asesoría para tu parrilla</li>
+              
               <li>• Productos frescos diarios</li>
               <li>• Embutidos artesanales</li>
             </ul>

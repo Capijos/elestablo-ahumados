@@ -378,24 +378,8 @@ export default function LaParritecaStore() {
                     >
                       INICIO
                     </button>
-                    <button
-                      onClick={() => {
-                        setSelectedCategory("CARNES")
-                        setMobileMenuOpen(false)
-                      }}
-                      className="text-left hover:text-red-500 transition-colors text-lg"
-                    >
-                      CARNES
-                    </button>
-                    <button
-                      onClick={() => {
-                        setSelectedCategory("EMBUTIDOS Y FIAMBRES")
-                        setMobileMenuOpen(false)
-                      }}
-                      className="text-left hover:text-red-500 transition-colors text-lg"
-                    >
-                      EMBUTIDOS
-                    </button>
+                   
+                    
                     <button
                       onClick={() => {
                         setShowContactForm(true)
