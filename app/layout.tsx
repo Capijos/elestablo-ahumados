@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'El establo ahumados',
   description: 'Los mejores ahumados de colombia',
   generator: '',
+  icons: {
+    icon: '/logo2.png', // o '/logo.png' si usas PNG
+  },
 }
 
 export default function RootLayout({
