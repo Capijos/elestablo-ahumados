@@ -57,7 +57,8 @@ export function ProductImageCarousel({
   return (
     <div className={`relative flex flex-col ${className}`}>
       {/* Imagen principal (reserva espacio para miniaturas abajo) */}
-      <div className="relative w-full h-[calc(100%-80px)] rounded-lg overflow-hidden">
+      <div className="relative w-full h-full md:h-[calc(100%-80px)] rounded-lg overflow-hidden">
+
         <Image
           src={images[currentImage] || "/placeholder.svg"}
           alt={`${productName} - Imagen ${currentImage + 1}`}
@@ -103,7 +104,7 @@ export function ProductImageCarousel({
 
       {/* Miniaturas sin scroll */}
       {images.length > 1 && (
-        <div className="flex gap-2 mt-2 pt-2 flex-wrap justify-center">
+        <div className="hidden md:flex gap-2 mt-2 pt-2 flex-wrap justify-center">
           {images.map((image, index) => (
             <button
               key={index}
@@ -122,6 +123,7 @@ export function ProductImageCarousel({
           ))}
         </div>
       )}
+
     </div>
   )
 }

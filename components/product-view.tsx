@@ -143,11 +143,14 @@ export function ProductView({
               </Button>
 
               <div className="flex items-center space-x-3">
-                <img
-                  src="/logo.png"
-                  alt="Logo El Establo Ahumados"
-                  className="h-12 rounded-full object-cover"
-                />
+                <a href="/">
+                  <img
+                    src="/logo.png"
+                    alt="Logo El Establo Ahumados"
+                    className="h-12 rounded-full object-cover"
+                  />
+                </a>
+
               </div>
 
 
@@ -449,11 +452,14 @@ export function ProductView({
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
-                  <img
-                    src="/logo.png"
-                    alt="Logo El Establo Ahumados"
-                    className="h-12 rounded-full object-cover"
-                  />
+                  <a href="/">
+                    <img
+                      src="/logo.png"
+                      alt="Logo El Establo Ahumados"
+                      className="h-12 rounded-full object-cover"
+                    />
+                  </a>
+
                 </div>
 
                 <nav className="flex space-x-8">

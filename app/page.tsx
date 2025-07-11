@@ -412,11 +412,14 @@ export default function LaParritecaStore() {
               {/* Logo centrado */}
               <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center space-x-3">
                 <div className="flex items-center space-x-3">
-                  <img
-                    src="/logo.png"
-                    alt="Logo El Establo Ahumados"
-                    className="h-12 rounded-full object-cover"
-                  />
+                  <a href="/">
+                    <img
+                      src="/logo.png"
+                      alt="Logo El Establo Ahumados"
+                      className="h-12 rounded-full object-cover"
+                    />
+                  </a>
+
                 </div>
 
               </div>
@@ -491,10 +494,6 @@ export default function LaParritecaStore() {
             </div>
           </div>
         </header>
-
-        {/* Hero Section Mobile */}
-        <HeroCarousel />
-
         {/* Barra de búsqueda separada */}
         <div className="bg-gray-100 px-4 py-3 relative">
           <div className="flex items-center space-x-2">
@@ -553,8 +552,12 @@ export default function LaParritecaStore() {
             </div>
           )}
         </div>
+        {/* Hero Section Mobile */}
+        <HeroCarousel />
 
-        {/* Breadcrumb y filtros */}
+
+
+        {/* Breadcrumb y filtros 
         <div className="bg-black px-4 py-4 border-b border-gray-800">
           <div className="text-center mb-4">
             <span className="text-gray-400">INICIO</span>
@@ -584,7 +587,7 @@ export default function LaParritecaStore() {
             </select>
           </div>
         </div>
-
+        */}
         {/* Productos */}
         <div className="px-4 py-6">
           <div className="grid grid-cols-2 gap-4">
@@ -683,11 +686,14 @@ export default function LaParritecaStore() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
-                  <img
-                    src="/logo.png"
-                    alt="Logo El Establo Ahumados"
-                    className="h-12 rounded-full object-cover"
-                  />
+                  <a href="/">
+                    <img
+                      src="/logo.png"
+                      alt="Logo El Establo Ahumados"
+                      className="h-12 rounded-full object-cover"
+                    />
+                  </a>
+
                 </div>
 
 
