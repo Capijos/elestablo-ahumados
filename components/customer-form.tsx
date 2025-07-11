@@ -142,6 +142,9 @@ export default function CustomerForm({
   const handleRegionChange = (region: string) => {
     setCustomerData({ ...customerData, region, comuna: "" })
   }
+  const shippingCost = 10000
+  const showShipping = cartTotal < 150000
+  const finalTotal = showShipping ? cartTotal + shippingCost : cartTotal
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -240,11 +243,20 @@ export default function CustomerForm({
             </div>
 
             <div className="border-t pt-4">
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-bold">Total: ${formatPrice(cartTotal)}</span>
-                <span className="text-sm text-gray-600">
+              <div className="mb-4 space-y-1">
+                <div className={`flex justify-between text-sm ${showShipping ? "" : "text-red-600 line-through"}`}>
+                  <span>Envío:</span>
+                  <span>${formatPrice(shippingCost)}</span>
+                </div>
+
+                <div className="flex justify-between items-center font-bold text-base">
+                  <span>Total:</span>
+                  <span>${formatPrice(finalTotal)}</span>
+                </div>
+
+                <div className="text-sm text-gray-600 text-right">
                   {cart.reduce((total, item) => total + item.quantity, 0)} productos
-                </span>
+                </div>
               </div>
 
               <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
