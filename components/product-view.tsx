@@ -142,14 +142,14 @@ export function ProductView({
                 <ArrowLeft className="w-5 h-5 text-white" />
               </Button>
 
-              <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold">LP</span>
-                </div>
-                <div className="text-center">
-                  <div className="text-lg font-bold text-white">LA PARRITECA</div>
-                </div>
+              <div className="flex items-center space-x-3">
+                <img
+                  src="/logo.png"
+                  alt="Logo El Establo Ahumados"
+                  className="h-12 rounded-full object-cover"
+                />
               </div>
+
 
               <Sheet open={cartOpen} onOpenChange={setCartOpen}>
                 <SheetTrigger asChild>
@@ -449,10 +449,11 @@ export function ProductView({
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-8">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">LP</span>
-                  </div>
-                  <span className="text-2xl font-bold">LA PARRITECA</span>
+                  <img
+                    src="/logo.png"
+                    alt="Logo El Establo Ahumados"
+                    className="h-12 rounded-full object-cover"
+                  />
                 </div>
 
                 <nav className="flex space-x-8">

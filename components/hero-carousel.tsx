@@ -8,8 +8,8 @@ const heroSlides = [
   {
     id: 1,
     image: "https://www.tienda.parriteca.com/wp-content/uploads/2022/11/portada-tienda-parriteca.webp",
-    title: "Ahumados El establo \nLo mejor de lo mejor parce..",
-    subtitle: "",
+    title: "AHUMADOS EL ESTABLO \nLO MEJOR DE LO MEJOR PARCE..",
+    subtitle: "Compras a partir de 150,000 cuentan con domicilio gratis.",
   },
   
 ]

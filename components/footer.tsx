@@ -11,16 +11,20 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-lg">EA</span>
+                <img
+                  src="/logo2.png"
+                  alt="Logo El Establo Ahumados"
+                  className="h-12 rounded-full object-cover"
+                />
               </div>
               <div>
-                <h3 className="text-xl font-bold">EL ESTABLO AHUMADOS</h3>
-                <p className="text-red-500 text-sm">Tu carnicería de confianza</p>
+                <h3 className="text-xl font-bold">AHUMADOS EL ESTABLO</h3>
+                <p className="text-red-500 text-sm">Tus ahumados de confianza</p>
               </div>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Especialistas en carnes premium para parrilla. Más de 15 años ofreciendo los mejores cortes, embutidos
-              artesanales y todo lo necesario para tu asado perfecto.
+              Especialistas en ahumados premium para parrilla. Más de 15 años ofreciendo los mejores cortes
+              todo lo necesario para tu asado perfecto.
             </p>
           </div>
 
@@ -31,8 +35,8 @@ export function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 text-red-500 mt-1 flex-shrink-0" />
                 <div className="text-sm text-gray-400">
-                  <p>Calle 123 #45-67</p>
-                  <p>Barrio La Parrilla</p>
+                  <p>Calle 17 # 99-77</p>
+                  <p>Barrio Fontibón Centro</p>
                   <p>Bogotá, Colombia</p>
                 </div>
               </div>
@@ -45,7 +49,7 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-red-500 flex-shrink-0" />
-                <p className="text-sm text-gray-400">info@laparriteca.com</p>
+                <p className="text-sm text-gray-400">elestabloahumados@gmail.com</p>
               </div>
             </div>
           </div>
@@ -76,12 +80,10 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold text-white">Servicios</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>• Domicilios sin costo mínimo</li>
               <li>• Cortes personalizados</li>
               <li>• Asesoría para tu parrilla</li>
               <li>• Productos frescos diarios</li>
               <li>• Embutidos artesanales</li>
-              <li>• Carbón y accesorios</li>
             </ul>
 
             <div className="pt-4">
