@@ -402,7 +402,7 @@ export function ProductView({
         {/* Botón flotante de WhatsApp - siempre visible */}
         <div className="fixed bottom-[7.2rem] right-4 z-50">
           <Button
-            onClick={() => window.open("https://wa.me/573224080321", "_blank")}
+            onClick={() => window.open("https://wa.me/573003408474", "_blank")}
             className="bg-green-500 hover:bg-green-600 rounded-full w-16 h-16 shadow-lg flex items-center justify-center"
           >
             <svg

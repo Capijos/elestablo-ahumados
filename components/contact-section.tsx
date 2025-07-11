@@ -86,7 +86,7 @@ export function ContactSection({ onClose }: ContactSectionProps) {
               </div>
 
               <Button
-                onClick={() => window.open("https://wa.me/573224080321", "_blank")}
+                onClick={() => window.open("https://wa.me/573003408474", "_blank")}
                 className="w-full bg-green-600 hover:bg-green-700"
               >
                 <MessageCircle className="w-4 h-4 mr-2" />

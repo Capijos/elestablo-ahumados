@@ -300,7 +300,7 @@ export default function LaParritecaStore() {
   // Enviar pedido por WhatsApp
   const sendWhatsAppOrder = (customerData: any) => {
     const message = generateWhatsAppMessage(customerData)
-    const whatsappUrl = `https://wa.me/573224080321?text=${message}`
+    const whatsappUrl = `https://wa.me/573003408474?text=${message}`
     window.open(whatsappUrl, "_blank")
     setShowCustomerForm(false)
     setCart([]) // Limpiar carrito después del pedido
@@ -635,7 +635,7 @@ export default function LaParritecaStore() {
         {/* Botón flotante de WhatsApp */}
         <div className="fixed bottom-6 right-6 z-50">
           <Button
-            onClick={() => window.open("https://wa.me/573224080321", "_blank")}
+            onClick={() => window.open("https://wa.me/573003408474", "_blank")}
             className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg flex items-center justify-center"
           >
             <svg
@@ -934,7 +934,7 @@ export default function LaParritecaStore() {
         {/* Botón flotante de WhatsApp */}
         <div className="fixed bottom-6 right-6 z-50">
           <Button
-            onClick={() => window.open("https://wa.me/573224080321", "_blank")}
+            onClick={() => window.open("https://wa.me/573003408474", "_blank")}
             className="bg-green-500 hover:bg-green-600 rounded-full w-14 h-14 shadow-lg flex items-center justify-center"
           >
             <svg
