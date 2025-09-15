@@ -28,6 +28,7 @@ const products = [
     category: "CARNES",
     subcategory: "ANGUS USA",
     images: [
+      "/chuleta.jpg",
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmCzk9QeGapDlS4QNZBZa9g3WjaPgYaIyUQ&s",
       "https://meattown.shop/cdn/shop/files/A70FE16D-548B-4FFD-8BAB-7DAB01046DDA.jpg?v=1702441930",
       "https://st4.depositphotos.com/1000605/21794/i/450/depositphotos_217945722-stock-photo-smoked-pork-meat-wooden-background.jpg",
@@ -48,6 +49,7 @@ const products = [
     category: "CARNES",
     subcategory: "ARGENTINA",
     images: [
+      "/lomo.jpg",
       "https://media.falabella.com/tottusPE/40915745_1/w=800,h=800,fit=pad",
       "https://i0.wp.com/entreparrilleros.cl/wp-content/uploads/2024/05/lomo-cerdo-.jpg?fit=810%2C810&ssl=1",
     ],
@@ -62,11 +64,11 @@ const products = [
   {
     id: 3,
     name: "CHORIZO DE CERDO AHUMADO X LIBRA",
-    price: 16000.0,
+    price: 14000.0,
     category: "EMBUTIDOS Y FIAMBRES",
     subcategory: "CHORIZOS",
     images: [
-      "https://chistorradenavarra.com/wp-content/uploads/%C2%BFQue%CC%81-es-un-chorizo-criollo.jpg",
+      "/chorizo.jpg",
 
     ],
 
@@ -78,25 +80,7 @@ const products = [
       "Nuestro chorizo cerdo ahumado por 72 horas es un producto que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, que le da este color y sabor único.",
 
   },
-  {
-    id: 4,
-    name: "CHORIZO DE POLLO AHUMADO X LIBRA",
-    price: 16000.0,
-    category: "EMBUTIDOS Y FIAMBRES",
-    subcategory: "CHORIZOS",
-    images: [
-      "https://sofia.com.bo/wp-content/uploads/2021/06/136_chorizo_ahumado_a_granel_1.jpg",
-      "https://piorico.com/wp-content/uploads/2020/08/chorizo-parrillero-ahumado-al-vacio2.jpg",
-    ],
-
-    inStock: true,
-    sku: "EMB004",
-    tags: ["Chorizo", "Pollo", "Ahumado", "Saludable"],
-    rating: 5,
-    description:
-      "Nuestro chorizo de pollo ahumado por 72 horas, es un producto único en colombia atrevete a probarlo lo mejor de lo mejor parce.",
-
-  },
+ 
   {
     id: 5,
     name: "COSTILLAS AHUMADAS DE CERDO X LIBRA",
@@ -104,6 +88,7 @@ const products = [
     category: "CARNES",
     subcategory: "NACIONALES",
     images: [
+      "/costillas.jpg",
       "https://cardiso.co/wp-content/uploads/2023/03/Costilla-de-Cerdo-Cardiso-scaled.jpg",
       "https://www.mundocarnico.com/wp-content/uploads/2021/12/COSTILLA-AHUMADA.png",
     ],
