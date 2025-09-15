@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'El establo ahumados',
+  title: 'Realiza tu pedido aqui',
   description: 'Los mejores ahumados de colombia',
   generator: '',
   icons: {
