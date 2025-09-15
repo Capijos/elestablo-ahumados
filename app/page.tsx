@@ -29,10 +29,7 @@ const products = [
     subcategory: "ANGUS USA",
     images: [
       "/chuleta.jpg",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqmCzk9QeGapDlS4QNZBZa9g3WjaPgYaIyUQ&s",
-      "https://meattown.shop/cdn/shop/files/A70FE16D-548B-4FFD-8BAB-7DAB01046DDA.jpg?v=1702441930",
-      "https://st4.depositphotos.com/1000605/21794/i/450/depositphotos_217945722-stock-photo-smoked-pork-meat-wooden-background.jpg",
-    ],
+     ],
 
     inStock: true,
     sku: "CAR001",
@@ -50,9 +47,7 @@ const products = [
     subcategory: "ARGENTINA",
     images: [
       "/lomo.jpg",
-      "https://media.falabella.com/tottusPE/40915745_1/w=800,h=800,fit=pad",
-      "https://i0.wp.com/entreparrilleros.cl/wp-content/uploads/2024/05/lomo-cerdo-.jpg?fit=810%2C810&ssl=1",
-    ],
+     ],
 
     inStock: true,
     sku: "CAR003",
@@ -89,8 +84,6 @@ const products = [
     subcategory: "NACIONALES",
     images: [
       "/costillas.jpg",
-      "https://cardiso.co/wp-content/uploads/2023/03/Costilla-de-Cerdo-Cardiso-scaled.jpg",
-      "https://www.mundocarnico.com/wp-content/uploads/2021/12/COSTILLA-AHUMADA.png",
     ],
 
     inStock: true,
