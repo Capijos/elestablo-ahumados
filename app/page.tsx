@@ -24,7 +24,7 @@ const products = [
   {
     id: 1,
     name: "CHULETA AHUMADA DE CERDO X LIBRA",
-    price: 16000.0,
+    price: 16500.0,
     category: "CARNES",
     subcategory: "ANGUS USA",
     images: [
@@ -42,7 +42,7 @@ const products = [
   {
     id: 2,
     name: "LOMO DE CERDO AHUMADO IMPORTADO X LIBRA",
-    price: 16000.0,
+    price: 16500.0,
     category: "CARNES",
     subcategory: "ARGENTINA",
     images: [
@@ -59,7 +59,7 @@ const products = [
   {
     id: 3,
     name: "CHORIZO DE CERDO AHUMADO X LIBRA",
-    price: 14000.0,
+    price: 14500.0,
     category: "EMBUTIDOS Y FIAMBRES",
     subcategory: "CHORIZOS",
     images: [
@@ -79,7 +79,7 @@ const products = [
   {
     id: 5,
     name: "COSTILLAS AHUMADAS DE CERDO X LIBRA",
-    price: 16000.0,
+    price: 16500.0,
     category: "CARNES",
     subcategory: "NACIONALES",
     images: [
@@ -92,6 +92,44 @@ const products = [
     rating: 4,
     description:
       "Nuestra costillas de cerdo ahumada por 72 horas es un corte de carne de cerdo que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura, este tipo de carne proviene de la costilla del cerdo y, tras el ahumado, adquiere un color rosado característico y un sabor ahumado unico con nuestra salmuera.",
+
+  },
+
+  {
+    id: 6,
+    name: "TOCINETA AHUMADA X LIBRA",
+    price: 14000.0,
+    category: "CARNES",
+    subcategory: "NACIONALES",
+    images: [
+      "/tocino.jpg",
+    ],
+
+    inStock: true,
+    sku: "CAR006",
+    tags: ["Tocino", "Cerdo", "Ahumadas"],
+    rating: 4,
+    description:
+      "Nuestro tocino a sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura.",
+
+  },
+
+  {
+    id: 7,
+    name: "JAMON AHUMADO X LIBRA",
+    price: 15000.0,
+    category: "JAMON",
+    subcategory: "NACIONALES",
+    images: [
+      "/jamon.jpg",
+    ],
+
+    inStock: true,
+    sku: "CAR007",
+    tags: ["Jamon", "Cerdo", "Ahumadas", "BBQ"],
+    rating: 4,
+    description:
+      "Nuestra jamon ahumado por 72 horas es un corte que ha sido sometido a un proceso de ahumado prolongado para intensificar su sabor y textura.",
 
   },
 
